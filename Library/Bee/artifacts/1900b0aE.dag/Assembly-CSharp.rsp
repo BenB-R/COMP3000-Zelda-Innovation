@@ -117,7 +117,9 @@
 -define:ENABLE_TERRAIN
 -define:ENABLE_TILEMAP
 -define:ENABLE_TIMELINE
+-define:ENABLE_INPUT_SYSTEM
 -define:ENABLE_LEGACY_INPUT_MANAGER
+-define:DEBUG_MODE_FOLIAGE
 -define:CSHARP_7_OR_LATER
 -define:CSHARP_7_3_OR_NEWER
 -r:"C:/Program Files/Unity/Hub/Editor/2021.3.15f1/Editor/Data/Managed/UnityEngine/UnityEditor.CoreModule.dll"
@@ -326,6 +328,7 @@
 -r:"C:/Program Files/Unity/Hub/Editor/2021.3.15f1/Editor/Data/NetStandard/ref/2.1.0/netstandard.dll"
 -r:"C:/Users/benri/source/repos/COMP3000-Zelda-Innovation/Library/PackageCache/com.unity.nuget.newtonsoft-json@3.0.2/Runtime/Newtonsoft.Json.dll"
 -r:"C:/Users/benri/source/repos/COMP3000-Zelda-Innovation/Library/PackageCache/com.unity.visualscripting@1.7.8/Runtime/VisualScripting.Flow/Dependencies/NCalc/Unity.VisualScripting.Antlr3.Runtime.dll"
+-r:"Library/Bee/artifacts/1900b0aE.dag/Unity.InputSystem.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/Unity.PlasticSCM.Editor.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/Unity.Rider.Editor.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/Unity.Services.Core.Analytics.ref.dll"
@@ -349,6 +352,46 @@
 -r:"Library/Bee/artifacts/1900b0aE.dag/Unity.VSCode.Editor.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/UnityEditor.UI.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/UnityEngine.UI.ref.dll"
+"Assets/Inputs/PlayerInputs.cs"
+"Assets/Scripts/Controllers/CameraController.cs"
+"Assets/Scripts/Controllers/NPCController.cs"
+"Assets/Scripts/Controllers/PlayerController.cs"
+"Assets/Scripts/Managers/IState.cs"
+"Assets/Scripts/Managers/StateManager.cs"
+"Assets/Scripts/Managers/States/MovementState.cs"
+"Assets/ThirdParty/Polyart/PolyartStudio/SharedResources/CritiasFoliage/Code/Foliage.cs"
+"Assets/ThirdParty/Polyart/PolyartStudio/SharedResources/CritiasFoliage/Code/FoliageCaching.cs"
+"Assets/ThirdParty/Polyart/PolyartStudio/SharedResources/CritiasFoliage/Code/FoliageCell.cs"
+"Assets/ThirdParty/Polyart/PolyartStudio/SharedResources/CritiasFoliage/Code/FoliageColliderData.cs"
+"Assets/ThirdParty/Polyart/PolyartStudio/SharedResources/CritiasFoliage/Code/FoliageColliders.cs"
+"Assets/ThirdParty/Polyart/PolyartStudio/SharedResources/CritiasFoliage/Code/FoliageData.cs"
+"Assets/ThirdParty/Polyart/PolyartStudio/SharedResources/CritiasFoliage/Code/FoliageDataRuntime.cs"
+"Assets/ThirdParty/Polyart/PolyartStudio/SharedResources/CritiasFoliage/Code/FoliageDataSerializer.cs"
+"Assets/ThirdParty/Polyart/PolyartStudio/SharedResources/CritiasFoliage/Code/FoliageInstance.cs"
+"Assets/ThirdParty/Polyart/PolyartStudio/SharedResources/CritiasFoliage/Code/FoliagePainter.cs"
+"Assets/ThirdParty/Polyart/PolyartStudio/SharedResources/CritiasFoliage/Code/FoliagePainterEditTime.cs"
+"Assets/ThirdParty/Polyart/PolyartStudio/SharedResources/CritiasFoliage/Code/FoliagePainterRuntime.cs"
+"Assets/ThirdParty/Polyart/PolyartStudio/SharedResources/CritiasFoliage/Code/FoliageRenderer.cs"
+"Assets/ThirdParty/Polyart/PolyartStudio/SharedResources/CritiasFoliage/Code/FoliageTerrainListener.cs"
+"Assets/ThirdParty/Polyart/PolyartStudio/SharedResources/CritiasFoliage/Code/FoliageTerrainUtilities.cs"
+"Assets/ThirdParty/Polyart/PolyartStudio/SharedResources/CritiasFoliage/Code/FoliageType.cs"
+"Assets/ThirdParty/Polyart/PolyartStudio/SharedResources/CritiasFoliage/Code/FoliageUtilities.cs"
+"Assets/ThirdParty/Polyart/PolyartStudio/SharedResources/CritiasFoliage/Code/FoliageWindTreeUtilities.cs"
+"Assets/ThirdParty/Polyart/PolyartStudio/SharedResources/CritiasFoliage/Code/FoliageWindTreeWind.cs"
+"Assets/ThirdParty/Polyart/PolyartStudio/SharedResources/CritiasFoliage/Examples/ExampleRuntimeSettings.cs"
+"Assets/ThirdParty/Polyart/PolyartStudio/SharedResources/CritiasFoliage/Examples/ExampleRuntimeTreeAdder.cs"
+"Assets/ThirdParty/Polyart/PolyartStudio/SharedResources/CritiasFoliage/Examples/ExampleRuntimeTreeRemover.cs"
+"Assets/ThirdParty/Polyart/PolyartStudio/SharedResources/Scripts/Gameplay/Character/FirstPersonController_Dreamscape.cs"
+"Assets/ThirdParty/Polyart/PolyartStudio/SharedResources/Scripts/Gameplay/Character/Interactable_Dreamscape.cs"
+"Assets/ThirdParty/Polyart/PolyartStudio/SharedResources/Scripts/Gameplay/Character/TestInteractable.cs"
+"Assets/ThirdParty/Polyart/PolyartStudio/SharedResources/Scripts/Gameplay/MillRotate.cs"
+"Assets/ThirdParty/Polyart/PolyartStudio/SharedResources/Scripts/Misc/Cull_Lights.cs"
+"Assets/ThirdParty/Polyart/PolyartStudio/SharedResources/Scripts/Misc/Flythrough.cs"
+"Assets/ThirdParty/Polyart/PolyartStudio/SharedResources/Scripts/Misc/FPS_Counter.cs"
+"Assets/ThirdParty/Polyart/PolyartStudio/SharedResources/Scripts/Misc/SmoothMouseLook.cs"
+"Assets/ThirdParty/Polyart/PolyartStudio/SharedResources/Scripts/Tools/FoliageInteractor.cs"
+"Assets/ThirdParty/Polyart/PolyartStudio/SharedResources/Scripts/Tools/NatureManager.cs"
+"Assets/ThirdParty/Polyart/PolyartStudio/SharedResources/Scripts/Tools/WaterReflection.cs"
 "Assets/TutorialInfo/Scripts/Readme.cs"
 -langversion:9.0
 
