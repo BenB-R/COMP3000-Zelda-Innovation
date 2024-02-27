@@ -2,15 +2,22 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField]
-    private float moveSpeed = 5f;
-    [SerializeField]
-    private float jumpForce = 5f;
     private Rigidbody rb;
-    [SerializeField]
-    private bool canGlide;
-    [SerializeField]
-    private float interactionDistance = 3f;
+    private bool isGliding = false;
+    private bool glideActivated = false;
+
+    [Header("Movement")]
+    [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private float sprintSpeed = 10f;
+    [SerializeField] private float jumpForce = 5f;
+    [SerializeField] private float interactionDistance = 3f;
+
+    [Header("Gliding")]
+    [SerializeField] private GameObject glideObject; // The object to toggle for gliding
+    [SerializeField] private bool canGlide = false;
+    [SerializeField] private float glideFallSpeed = 2f; // Reduced falling speed
+    [SerializeField] private float glideMoveSpeed = 7f; // Increased movement speed while gliding
+
 
     #region getters
     public bool CanGlide { get; private set; }
@@ -20,10 +27,21 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        if (glideObject != null)
+            glideObject.SetActive(false); // Ensure the glide object is initially disabled
+    }
+
+    private void Update()
+    {
+        HandleGliding();
     }
 
     public void Move(Vector3 direction)
     {
+        // Determine if the player is sprinting
+        bool isSprinting = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+        float currentSpeed = isSprinting ? sprintSpeed : moveSpeed;
+
         // Create a new Vector3 to hold the direction based on direct key presses
         Vector3 directInput = new Vector3(
             Input.GetKey(KeyCode.D) ? 1 : Input.GetKey(KeyCode.A) ? -1 : 0,
@@ -37,7 +55,7 @@ public class PlayerController : MonoBehaviour
         if (movement == Vector3.zero)
         {
             // If there is no movement input, smoothly decelerate to a stop
-            rb.velocity = Vector3.Lerp(rb.velocity, Vector3.zero, Time.deltaTime * moveSpeed);
+            rb.velocity = Vector3.Lerp(rb.velocity, Vector3.zero, Time.deltaTime * currentSpeed);
         }
         else
         {
@@ -55,7 +73,7 @@ public class PlayerController : MonoBehaviour
             Vector3 worldDirection = cameraForward * movement.z + cameraRight * movement.x;
 
             // Apply the movement to the Rigidbody
-            rb.MovePosition(rb.position + worldDirection * moveSpeed * Time.deltaTime);
+            rb.MovePosition(rb.position + worldDirection * currentSpeed * Time.deltaTime);
 
             // Update the player's rotation to match the movement direction
             if (worldDirection != Vector3.zero)
@@ -68,51 +86,74 @@ public class PlayerController : MonoBehaviour
 
     public void Jump()
     {
-        rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-        /*
         if (IsGrounded())
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            glideActivated = false; // Reset glide activation on jump
             Debug.Log("Jumped");
         }
         else
         {
             Debug.Log("Not Grounded");
-        }*/
+        }
     }
 
     private bool IsGrounded()
     {
-        float extraHeight = 5f;
+        float rayStartHeight = -0.8f;
+        float rayLength = 0.25f;
         RaycastHit hit;
-        // LayerMask to specify which layer we are hitting. Replace "TerrainLayerName" with the actual name of your terrain layer.
-        LayerMask groundLayer = LayerMask.GetMask("Terrain");
 
-        // Visualize the raycast in the editor for debugging purposes
-        Debug.DrawRay(transform.position + Vector3.up * extraHeight, Vector3.down * (extraHeight + 0.1f), Color.red);
+        Vector3 rayStart = transform.position + Vector3.up * rayStartHeight;
+        Debug.DrawRay(rayStart, Vector3.down * rayLength, Color.red);
 
-        // Cast a ray downward from just below the bottom of the player object to detect "ground"
-        if (Physics.Raycast(transform.position + Vector3.up * extraHeight, Vector3.down, out hit, extraHeight + 0.1f, groundLayer))
+        if (Physics.Raycast(rayStart, Vector3.down, out hit, rayLength))
         {
-            // If the ray hits something on the ground layer, the player is grounded
+            Debug.Log($"Hit: {hit.collider.gameObject.name}, Point: {hit.point}, Distance: {hit.distance}");
             return true;
         }
 
         return false;
     }
 
+    private bool IsAtHeight()
+    {
+        float rayStartHeight = -0.8f;
+        float heightCheck = 1f; // Minimum height for gliding
+
+        Vector3 rayStart = transform.position + Vector3.up * rayStartHeight;
+
+        RaycastHit hit;
+        if (Physics.Raycast(rayStart, Vector3.down, out hit, heightCheck))
+        {
+            // Return true if the player is higher than the specified height
+            return hit.distance > heightCheck;
+        }
+        return true; // Assume true if raycast doesn't hit anything
+    }
+
 
     public void Interact()
     {
-        float raycastHeightOffset = 1.0f; // Adjust this value as needed
-        Vector3 raycastStartPosition = transform.position + Vector3.up * raycastHeightOffset;
+        float raycastHeightOffset = 0.6f; // Vertical offset for the ray start
+        float raycastForwardOffset = 0.6f; // Forward offset for the ray start
+
+        // Calculate the ray start point
+        Vector3 rayStart = transform.position + Vector3.up * raycastHeightOffset + transform.forward * raycastForwardOffset;
         RaycastHit hit;
 
-        if (Physics.Raycast(raycastStartPosition, transform.forward, out hit, interactionDistance))
+        // Draw the ray in the Scene view for debugging
+        Debug.DrawRay(rayStart, transform.forward * interactionDistance, Color.red);
+
+        if (Physics.Raycast(rayStart, transform.forward, out hit, interactionDistance))
         {
+            Debug.Log("Hit: " + hit.collider.gameObject.name); // Log the name of the hit object
+
             NPCController npc = hit.collider.GetComponent<NPCController>();
             if (npc != null)
             {
+                Debug.Log("NPC is not null!");
+                // Interact with the NPC
                 if (npc.dialogueUI.activeInHierarchy)
                 {
                     npc.NextDialogue();
@@ -123,12 +164,62 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
+
+        if (Physics.Raycast(rayStart, transform.forward, out hit, interactionDistance))
+        {
+            // ... existing NPC interaction code ...
+
+            AbilityActivator abilityActivator = hit.collider.GetComponent<AbilityActivator>();
+            if (abilityActivator != null)
+            {
+                abilityActivator.ActivateAbility(this);
+            }
+        }
     }
 
 
+    private void HandleGliding()
+    {
+        // Check if the player can glide, is not grounded, and the glide hasn't been activated yet
+        if (canGlide && !IsGrounded() && !glideActivated)
+        {
+            // Activate gliding on the initial press of the space bar
+            if (Input.GetKeyDown(KeyCode.Space) && IsAtHeight())
+            {
+                glideActivated = true;
+            }
+        }
+
+        // Handle the gliding physics and visuals
+        if (glideActivated && Input.GetKey(KeyCode.Space))
+        {
+            // Enable the glide object
+            if (glideObject != null)
+                glideObject.SetActive(true);
+
+            // Modify the Rigidbody's velocity to reduce falling speed
+            Vector3 glideVelocity = rb.velocity;
+            glideVelocity.y = -glideFallSpeed;
+            rb.velocity = glideVelocity;
+
+            // Increase movement speed while gliding
+            moveSpeed = glideMoveSpeed;
+        }
+        else
+        {
+            // Disable the glide object and reset gliding parameters when gliding stops
+            if (glideObject != null)
+                glideObject.SetActive(false);
+
+            // Revert to normal movement speed when not gliding
+            moveSpeed = 5f;
+            glideActivated = false;
+        }
+    }
+
     public void UnlockGlide()
     {
-        CanGlide = true;
+        canGlide = true;
     }
 
     // You can add additional methods here for other abilities
