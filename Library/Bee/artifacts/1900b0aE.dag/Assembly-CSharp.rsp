@@ -362,6 +362,7 @@
 "Assets/Scripts/Managers/IState.cs"
 "Assets/Scripts/Managers/MessageManager.cs"
 "Assets/Scripts/Managers/StateManager.cs"
+"Assets/Scripts/Managers/States/CombatScript.cs"
 "Assets/Scripts/Managers/States/MovementState.cs"
 "Assets/Scripts/UI/SceneLoader.cs"
 "Assets/Scripts/UI/ToggleObject.cs"

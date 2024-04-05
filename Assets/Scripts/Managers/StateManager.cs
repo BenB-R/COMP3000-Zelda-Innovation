@@ -1,5 +1,5 @@
-using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine;
 
 public class StateManager : MonoBehaviour
 {
@@ -18,23 +18,28 @@ public class StateManager : MonoBehaviour
 
     // Reference to the input actions (assuming you have this set up)
     private PlayerInputs inputActions;
+    private InputAction menuToggleAction; // Reference to the menu toggle action
 
-    // Start is called before the first frame update
     void Awake()
     {
         // Initialize the input actions
         inputActions = new PlayerInputs();
 
-        // Register the escape key action
-        inputActions.BasicMovement.Menu.performed += _ => ToggleMenu();
+        // Get the reference to the menu toggle action (assuming it's in an "UI" action map)
+        menuToggleAction = inputActions.General.Menu;
+
+        // Register the menu toggle action
+        menuToggleAction.performed += HandleMenuToggle;
 
         // Initialize the game state to NormalMovement
         ChangeState(GameState.NormalMovement);
 
         var playerController = FindObjectOfType<PlayerController>(); // Assuming there is only one PlayerController in the scene.
+        var cameraController = FindObjectOfType<CameraController>();
         if (playerController != null)
         {
-            movementState = new MovementState(playerController);
+            movementState = new MovementState(playerController, inputActions, cameraController);
+            movementState.Enter(); // Call the Enter method after initializing the MovementState
         }
         else
         {
@@ -59,22 +64,25 @@ public class StateManager : MonoBehaviour
         {
             case GameState.Menu:
                 Debug.Log("Entering Menu State");
-                // Enable menu inputs/actions
-                // Setup menu UI
-                // inputActions.Menu.Enable(); // Assuming you have a Menu action map
+                // Show the cursor and unlock it
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+                HandleInputActions(newState); // Enable input actions for the new state
                 break;
 
             case GameState.NormalMovement:
                 Debug.Log("Entering Normal Movement State");
-                inputActions.BasicMovement.Enable();
                 movementState?.Enter();
+                HandleInputActions(newState); // Enable input actions for the new state
+                                              // Hide the cursor and lock it to the center of the screen
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
                 break;
 
             case GameState.Combat:
                 Debug.Log("Entering Combat State");
                 // Enable combat inputs/actions
                 // Setup player for combat
-                // inputActions.Combat.Enable(); // Assuming you have a Combat action map
                 break;
         }
     }
@@ -85,14 +93,13 @@ public class StateManager : MonoBehaviour
         Debug.Log("Disabling all inputs");
         // disable all input action maps
         inputActions.BasicMovement.Disable();
-        // inputActions.Menu.Disable();
-        // inputActions.Combat.Disable();
+        inputActions.InMenu.Disable();
+        inputActions.Combat.Disable();
     }
 
     // Method to toggle the menu state
-    private void ToggleMenu()
+    private void HandleMenuToggle(InputAction.CallbackContext context)
     {
-        // Toggle state between Menu and NormalMovement
         if (currentState == GameState.NormalMovement)
         {
             ChangeState(GameState.Menu);
@@ -103,15 +110,8 @@ public class StateManager : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
-        // Check for Escape key to toggle menu
-        if (Input.GetKeyUp(KeyCode.Escape))
-        {
-            ToggleMenu();
-        }
-
         // Call Execute on the current state
         if (currentState == GameState.NormalMovement)
         {
@@ -127,10 +127,35 @@ public class StateManager : MonoBehaviour
         }
     }
 
-
     private void OnDisable()
     {
         inputActions.Disable(); // Disable the input actions
+        menuToggleAction.performed -= HandleMenuToggle; // Unregister the HandleMenuToggle method
         movementState?.Exit();
+    }
+
+    private void HandleInputActions(GameState state)
+    {
+        switch (state)
+        {
+            case GameState.NormalMovement:
+                inputActions.BasicMovement.Enable();
+                inputActions.Gliding.Enable();
+                inputActions.InMenu.Disable();
+                inputActions.Combat.Disable();
+                break;
+            case GameState.Menu:
+                inputActions.BasicMovement.Disable();
+                inputActions.Gliding.Disable();
+                inputActions.InMenu.Enable();
+                inputActions.Combat.Disable();
+                break;
+            case GameState.Combat:
+                inputActions.BasicMovement.Disable();
+                inputActions.Gliding.Disable();
+                inputActions.InMenu.Disable();
+                inputActions.Combat.Enable();
+                break;
+        }
     }
 }

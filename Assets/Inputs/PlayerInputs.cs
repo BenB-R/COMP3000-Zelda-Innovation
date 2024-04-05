@@ -64,13 +64,22 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Menu"",
-                    ""type"": ""Button"",
-                    ""id"": ""27befc16-08c5-4e0a-b5e6-de83b2037b51"",
-                    ""expectedControlType"": ""Button"",
+                    ""name"": ""CameraX"",
+                    ""type"": ""Value"",
+                    ""id"": ""febba372-03de-46d2-a8ad-4f35ad1988cf"",
+                    ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""CameraY"",
+                    ""type"": ""Value"",
+                    ""id"": ""8144cc4a-a41f-419a-8e97-2447fa8321f6"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -164,12 +173,23 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""62f01737-de57-4c6c-9d05-da5bc0c92e8e"",
-                    ""path"": ""<Keyboard>/escape"",
+                    ""id"": ""14a04fa6-bbca-46a9-8141-35a5043fb726"",
+                    ""path"": ""<Mouse>/delta/x"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Menu"",
+                    ""action"": ""CameraX"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d3bf8cc2-c7ce-411f-94f5-650d63aba84d"",
+                    ""path"": ""<Mouse>/delta/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraY"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -258,6 +278,34 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""General"",
+            ""id"": ""bc563229-cce8-4545-9b6c-4c5bf188907c"",
+            ""actions"": [
+                {
+                    ""name"": ""Menu"",
+                    ""type"": ""Button"",
+                    ""id"": ""36856ec4-16f4-44a4-ba46-a43fdce3e41f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""dd2d54d6-f8de-42f8-9202-905a3d67e1bc"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Menu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -274,7 +322,8 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         m_BasicMovement_Sprint = m_BasicMovement.FindAction("Sprint", throwIfNotFound: true);
         m_BasicMovement_Jump = m_BasicMovement.FindAction("Jump", throwIfNotFound: true);
         m_BasicMovement_Interact = m_BasicMovement.FindAction("Interact", throwIfNotFound: true);
-        m_BasicMovement_Menu = m_BasicMovement.FindAction("Menu", throwIfNotFound: true);
+        m_BasicMovement_CameraX = m_BasicMovement.FindAction("CameraX", throwIfNotFound: true);
+        m_BasicMovement_CameraY = m_BasicMovement.FindAction("CameraY", throwIfNotFound: true);
         // InMenu
         m_InMenu = asset.FindActionMap("InMenu", throwIfNotFound: true);
         m_InMenu_Click = m_InMenu.FindAction("Click", throwIfNotFound: true);
@@ -284,6 +333,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         // Gliding
         m_Gliding = asset.FindActionMap("Gliding", throwIfNotFound: true);
         m_Gliding_Glide = m_Gliding.FindAction("Glide", throwIfNotFound: true);
+        // General
+        m_General = asset.FindActionMap("General", throwIfNotFound: true);
+        m_General_Menu = m_General.FindAction("Menu", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -347,7 +399,8 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     private readonly InputAction m_BasicMovement_Sprint;
     private readonly InputAction m_BasicMovement_Jump;
     private readonly InputAction m_BasicMovement_Interact;
-    private readonly InputAction m_BasicMovement_Menu;
+    private readonly InputAction m_BasicMovement_CameraX;
+    private readonly InputAction m_BasicMovement_CameraY;
     public struct BasicMovementActions
     {
         private @PlayerInputs m_Wrapper;
@@ -356,7 +409,8 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         public InputAction @Sprint => m_Wrapper.m_BasicMovement_Sprint;
         public InputAction @Jump => m_Wrapper.m_BasicMovement_Jump;
         public InputAction @Interact => m_Wrapper.m_BasicMovement_Interact;
-        public InputAction @Menu => m_Wrapper.m_BasicMovement_Menu;
+        public InputAction @CameraX => m_Wrapper.m_BasicMovement_CameraX;
+        public InputAction @CameraY => m_Wrapper.m_BasicMovement_CameraY;
         public InputActionMap Get() { return m_Wrapper.m_BasicMovement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -378,9 +432,12 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @Interact.started -= m_Wrapper.m_BasicMovementActionsCallbackInterface.OnInteract;
                 @Interact.performed -= m_Wrapper.m_BasicMovementActionsCallbackInterface.OnInteract;
                 @Interact.canceled -= m_Wrapper.m_BasicMovementActionsCallbackInterface.OnInteract;
-                @Menu.started -= m_Wrapper.m_BasicMovementActionsCallbackInterface.OnMenu;
-                @Menu.performed -= m_Wrapper.m_BasicMovementActionsCallbackInterface.OnMenu;
-                @Menu.canceled -= m_Wrapper.m_BasicMovementActionsCallbackInterface.OnMenu;
+                @CameraX.started -= m_Wrapper.m_BasicMovementActionsCallbackInterface.OnCameraX;
+                @CameraX.performed -= m_Wrapper.m_BasicMovementActionsCallbackInterface.OnCameraX;
+                @CameraX.canceled -= m_Wrapper.m_BasicMovementActionsCallbackInterface.OnCameraX;
+                @CameraY.started -= m_Wrapper.m_BasicMovementActionsCallbackInterface.OnCameraY;
+                @CameraY.performed -= m_Wrapper.m_BasicMovementActionsCallbackInterface.OnCameraY;
+                @CameraY.canceled -= m_Wrapper.m_BasicMovementActionsCallbackInterface.OnCameraY;
             }
             m_Wrapper.m_BasicMovementActionsCallbackInterface = instance;
             if (instance != null)
@@ -397,9 +454,12 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @Interact.started += instance.OnInteract;
                 @Interact.performed += instance.OnInteract;
                 @Interact.canceled += instance.OnInteract;
-                @Menu.started += instance.OnMenu;
-                @Menu.performed += instance.OnMenu;
-                @Menu.canceled += instance.OnMenu;
+                @CameraX.started += instance.OnCameraX;
+                @CameraX.performed += instance.OnCameraX;
+                @CameraX.canceled += instance.OnCameraX;
+                @CameraY.started += instance.OnCameraY;
+                @CameraY.performed += instance.OnCameraY;
+                @CameraY.canceled += instance.OnCameraY;
             }
         }
     }
@@ -503,6 +563,39 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         }
     }
     public GlidingActions @Gliding => new GlidingActions(this);
+
+    // General
+    private readonly InputActionMap m_General;
+    private IGeneralActions m_GeneralActionsCallbackInterface;
+    private readonly InputAction m_General_Menu;
+    public struct GeneralActions
+    {
+        private @PlayerInputs m_Wrapper;
+        public GeneralActions(@PlayerInputs wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Menu => m_Wrapper.m_General_Menu;
+        public InputActionMap Get() { return m_Wrapper.m_General; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(GeneralActions set) { return set.Get(); }
+        public void SetCallbacks(IGeneralActions instance)
+        {
+            if (m_Wrapper.m_GeneralActionsCallbackInterface != null)
+            {
+                @Menu.started -= m_Wrapper.m_GeneralActionsCallbackInterface.OnMenu;
+                @Menu.performed -= m_Wrapper.m_GeneralActionsCallbackInterface.OnMenu;
+                @Menu.canceled -= m_Wrapper.m_GeneralActionsCallbackInterface.OnMenu;
+            }
+            m_Wrapper.m_GeneralActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Menu.started += instance.OnMenu;
+                @Menu.performed += instance.OnMenu;
+                @Menu.canceled += instance.OnMenu;
+            }
+        }
+    }
+    public GeneralActions @General => new GeneralActions(this);
     private int m_PlayerSchemeIndex = -1;
     public InputControlScheme PlayerScheme
     {
@@ -518,7 +611,8 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         void OnSprint(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
-        void OnMenu(InputAction.CallbackContext context);
+        void OnCameraX(InputAction.CallbackContext context);
+        void OnCameraY(InputAction.CallbackContext context);
     }
     public interface IInMenuActions
     {
@@ -531,5 +625,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     public interface IGlidingActions
     {
         void OnGlide(InputAction.CallbackContext context);
+    }
+    public interface IGeneralActions
+    {
+        void OnMenu(InputAction.CallbackContext context);
     }
 }

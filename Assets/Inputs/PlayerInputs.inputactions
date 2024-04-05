@@ -42,13 +42,22 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Menu",
-                    "type": "Button",
-                    "id": "27befc16-08c5-4e0a-b5e6-de83b2037b51",
-                    "expectedControlType": "Button",
+                    "name": "CameraX",
+                    "type": "Value",
+                    "id": "febba372-03de-46d2-a8ad-4f35ad1988cf",
+                    "expectedControlType": "Axis",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "CameraY",
+                    "type": "Value",
+                    "id": "8144cc4a-a41f-419a-8e97-2447fa8321f6",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -142,12 +151,23 @@
                 },
                 {
                     "name": "",
-                    "id": "62f01737-de57-4c6c-9d05-da5bc0c92e8e",
-                    "path": "<Keyboard>/escape",
+                    "id": "14a04fa6-bbca-46a9-8141-35a5043fb726",
+                    "path": "<Mouse>/delta/x",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Menu",
+                    "action": "CameraX",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d3bf8cc2-c7ce-411f-94f5-650d63aba84d",
+                    "path": "<Mouse>/delta/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CameraY",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -232,6 +252,34 @@
                     "processors": "",
                     "groups": "",
                     "action": "Glide",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "General",
+            "id": "bc563229-cce8-4545-9b6c-4c5bf188907c",
+            "actions": [
+                {
+                    "name": "Menu",
+                    "type": "Button",
+                    "id": "36856ec4-16f4-44a4-ba46-a43fdce3e41f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "dd2d54d6-f8de-42f8-9202-905a3d67e1bc",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Menu",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -3,12 +3,10 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private Rigidbody rb;
-    private bool isGliding = false;
     private bool glideActivated = false;
 
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 5f;
-    [SerializeField] private float sprintSpeed = 10f;
     [SerializeField] private float jumpForce = 5f;
     [SerializeField] private float interactionDistance = 3f;
 
@@ -17,7 +15,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private bool canGlide = false;
     [SerializeField] private float glideFallSpeed = 2f; // Reduced falling speed
     [SerializeField] private float glideMoveSpeed = 7f; // Increased movement speed while gliding
-
 
     #region getters
     public bool CanGlide { get; private set; }
@@ -36,26 +33,14 @@ public class PlayerController : MonoBehaviour
         HandleGliding();
     }
 
-    public void Move(Vector3 direction)
+    public void MovePlayer(Vector3 direction)
     {
-        // Determine if the player is sprinting
-        bool isSprinting = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
-        float currentSpeed = isSprinting ? sprintSpeed : moveSpeed;
-
-        // Create a new Vector3 to hold the direction based on direct key presses
-        Vector3 directInput = new Vector3(
-            Input.GetKey(KeyCode.D) ? 1 : Input.GetKey(KeyCode.A) ? -1 : 0,
-            0,
-            Input.GetKey(KeyCode.W) ? 1 : Input.GetKey(KeyCode.S) ? -1 : 0
-        );
-
-        // If there was no input from the input system (i.e., direction is zero), use the direct input
-        Vector3 movement = (direction == Vector3.zero) ? directInput : direction;
+        Vector3 movement = direction;
 
         if (movement == Vector3.zero)
         {
             // If there is no movement input, smoothly decelerate to a stop
-            rb.velocity = Vector3.Lerp(rb.velocity, Vector3.zero, Time.deltaTime * currentSpeed);
+            rb.velocity = Vector3.Lerp(rb.velocity, Vector3.zero, Time.deltaTime * moveSpeed);
         }
         else
         {
@@ -73,7 +58,7 @@ public class PlayerController : MonoBehaviour
             Vector3 worldDirection = cameraForward * movement.z + cameraRight * movement.x;
 
             // Apply the movement to the Rigidbody
-            rb.MovePosition(rb.position + worldDirection * currentSpeed * Time.deltaTime);
+            rb.MovePosition(rb.position + worldDirection * moveSpeed * Time.deltaTime);
 
             // Update the player's rotation to match the movement direction
             if (worldDirection != Vector3.zero)
@@ -83,12 +68,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-
     public void Jump()
     {
         if (IsGrounded())
         {
-            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.VelocityChange);
             glideActivated = false; // Reset glide activation on jump
             Debug.Log("Jumped");
         }
@@ -131,7 +115,6 @@ public class PlayerController : MonoBehaviour
         }
         return true; // Assume true if raycast doesn't hit anything
     }
-
 
     public void Interact()
     {
@@ -177,21 +160,17 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-
     private void HandleGliding()
     {
         // Check if the player can glide, is not grounded, and the glide hasn't been activated yet
         if (canGlide && !IsGrounded() && !glideActivated)
         {
-            // Activate gliding on the initial press of the space bar
-            if (Input.GetKeyDown(KeyCode.Space) && IsAtHeight())
-            {
-                glideActivated = true;
-            }
+            // Activate gliding when the glide condition is met
+            glideActivated = true;
         }
 
         // Handle the gliding physics and visuals
-        if (glideActivated && Input.GetKey(KeyCode.Space))
+        if (glideActivated)
         {
             // Enable the glide object
             if (glideObject != null)
@@ -213,7 +192,6 @@ public class PlayerController : MonoBehaviour
 
             // Revert to normal movement speed when not gliding
             moveSpeed = 5f;
-            glideActivated = false;
         }
     }
 
@@ -221,6 +199,4 @@ public class PlayerController : MonoBehaviour
     {
         canGlide = true;
     }
-
-    // You can add additional methods here for other abilities
 }

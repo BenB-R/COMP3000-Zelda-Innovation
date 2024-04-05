@@ -18,12 +18,15 @@ public class CameraController : MonoBehaviour
         distance = maxDistance;
     }
 
-    void Update()
+    public void HandleMouseInput(Vector2 mouseMovement)
     {
-        currentX += Input.GetAxis("Mouse X") * sensitivity;
-        currentY -= Input.GetAxis("Mouse Y") * sensitivity;
+        currentX += mouseMovement.x * sensitivity;
+        currentY -= mouseMovement.y * sensitivity;
         currentY = Mathf.Clamp(currentY, -35, 60);
+    }
 
+    void LateUpdate()
+    {
         // Adjust camera distance if a collision is detected
         RaycastHit hit;
         if (Physics.Raycast(player.position, transform.position - player.position, out hit, maxDistance, collisionLayer))
@@ -34,10 +37,7 @@ public class CameraController : MonoBehaviour
         {
             distance = maxDistance;
         }
-    }
 
-    void LateUpdate()
-    {
         Vector3 dir = new Vector3(0, 0, -distance);
         Quaternion rotation = Quaternion.Euler(currentY, currentX, 0);
         transform.position = player.position + rotation * dir;
