@@ -17,6 +17,35 @@ public class NPCController : MonoBehaviour
         dialogueUI.SetActive(false);
     }
 
+    private void Update()
+    {
+        if (dialogueUI.activeSelf && ActiveNPC == this)
+        {
+            float distanceToPlayer = Vector3.Distance(transform.position, PlayerController.Instance.transform.position);
+            if (distanceToPlayer > 5.0f)
+            {
+                HideDialogue();
+            }
+        }
+    }
+
+    public void Interact()
+    {
+        // Check if this NPC is already the active one
+        if (ActiveNPC == this && dialogueUI.activeSelf)
+        {
+            // Already active, so go to the next dialogue
+            NextDialogue();
+        }
+        else
+        {
+            // Not active or dialogue UI not shown, start new interaction
+            StartInteraction();
+        }
+    }
+
+
+
     public void StartInteraction()
     {
         if (dialogues.Length == 0) return; // Check if there are any dialogues

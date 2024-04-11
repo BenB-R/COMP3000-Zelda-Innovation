@@ -16,7 +16,6 @@ public class MovementState : IState
     public void Enter()
     {
         Debug.Log("Entered Movement State");
-        // Hide the cursor and lock it to the center of the screen
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
     }
@@ -25,38 +24,25 @@ public class MovementState : IState
     {
         Vector2 movementInput = inputActions.BasicMovement.Move.ReadValue<Vector2>();
         Vector3 movementDirection = new Vector3(movementInput.x, 0, movementInput.y);
-
-        // Read the mouse movement components separately
         float mouseX = inputActions.BasicMovement.CameraX.ReadValue<float>();
         float mouseY = inputActions.BasicMovement.CameraY.ReadValue<float>();
-
         Vector2 mouseMovement = new Vector2(mouseX, mouseY);
 
         playerController.MovePlayer(movementDirection);
         cameraController.HandleMouseInput(mouseMovement);
 
-        if (movementDirection != Vector3.zero)
-        {
-            Debug.Log($"Executing movement with direction: {movementDirection}");
-        }
+        if (inputActions.BasicMovement.Jump.WasPressedThisFrame()) playerController.Jump();
+        else if (inputActions.BasicMovement.Jump.WasReleasedThisFrame()) playerController.OnJumpButtonReleased();
+        if (inputActions.BasicMovement.Interact.WasPressedThisFrame()) playerController.Interact();
 
-        if (inputActions.BasicMovement.Jump.WasPressedThisFrame())
-        {
-            playerController.Jump();
-            Debug.Log("Jump executed");
-        }
-
-        if (inputActions.BasicMovement.Interact.WasPressedThisFrame())
-        {
-            playerController.Interact();
-            Debug.Log("Interact executed");
-        }
+        bool isSprinting = inputActions.BasicMovement.Sprint.ReadValue<float>() > 0;
+        if (isSprinting) playerController.Sprint();
+        else playerController.StopSprint();
     }
 
     public void Exit()
     {
         Debug.Log("Exited Movement State");
-        // Show the cursor and unlock it when exiting the movement state
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
     }

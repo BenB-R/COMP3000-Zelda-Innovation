@@ -206,9 +206,18 @@
             "id": "f2893be6-d5f3-4106-aaba-db465c5e794c",
             "actions": [
                 {
-                    "name": "New action",
+                    "name": "SwitchLeft",
                     "type": "Button",
                     "id": "95b75bac-70b2-4a74-8d7a-f9a5f7323b44",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SwitchRight",
+                    "type": "Button",
+                    "id": "1a924dad-5f48-4290-be04-88d218e0e7ae",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -218,12 +227,23 @@
             "bindings": [
                 {
                     "name": "",
-                    "id": "1cd8c4ca-0015-4917-bc11-5f427bda9e07",
-                    "path": "",
+                    "id": "cfa879c0-4778-45a0-8819-a4877710d9a0",
+                    "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "New action",
+                    "action": "SwitchRight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1cd8c4ca-0015-4917-bc11-5f427bda9e07",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SwitchLeft",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -269,6 +289,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "CombatToggle",
+                    "type": "Button",
+                    "id": "1b6c21d1-b7f7-4e1c-9ca0-47eaa47b0a35",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -280,6 +309,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Menu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "19e5ed4d-e757-4ccd-8176-5c01289ed7b4",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CombatToggle",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

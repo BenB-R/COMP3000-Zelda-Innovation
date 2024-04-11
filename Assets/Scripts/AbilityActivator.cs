@@ -1,16 +1,15 @@
 using UnityEngine;
 using TMPro;
-using System.Collections; // Required for IEnumerator
 using fyp;
 
 public class AbilityActivator : MonoBehaviour
 {
-    public enum AbilityType { Glide, Sprint, JumpBoost } // Add more abilities as needed
+    public enum AbilityType { Glide, Sprint, JumpBoost }
 
     [SerializeField]
     private AbilityType abilityToActivate;
-    [SerializeField]
-    private string abilityName; // The name to display when the ability is found
+
+    public string abilityName; // The name to display when the ability is found
     [SerializeField]
     private TextMeshProUGUI messageText; // Reference to a TextMesh Pro UGUI element
 
@@ -20,12 +19,13 @@ public class AbilityActivator : MonoBehaviour
             messageText.gameObject.SetActive(false); // Hide the message text initially
     }
 
-    public void ActivateAbility(PlayerController player)
+    public void ActivateAbility(PlayerManager playerManager)
     {
+        Debug.Log("do it get here?");
         switch (abilityToActivate)
         {
             case AbilityType.Glide:
-                player.UnlockGlide();
+                playerManager.UnlockGlide();
                 break;
                 // Add cases for other abilities here
         }

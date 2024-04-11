@@ -1,10 +1,14 @@
 using UnityEngine.InputSystem;
 using UnityEngine;
+using Suntail;
+using fyp;
 
 public class StateManager : MonoBehaviour
 {
     // Enumeration for different game states
     private MovementState movementState;
+    private CombatState combatState;
+    [SerializeField] private PlayerController playerController;
 
     public enum GameState
     {
@@ -19,6 +23,7 @@ public class StateManager : MonoBehaviour
     // Reference to the input actions (assuming you have this set up)
     private PlayerInputs inputActions;
     private InputAction menuToggleAction; // Reference to the menu toggle action
+    private InputAction combatToggleAction;
 
     void Awake()
     {
@@ -31,6 +36,10 @@ public class StateManager : MonoBehaviour
         // Register the menu toggle action
         menuToggleAction.performed += HandleMenuToggle;
 
+        combatToggleAction = inputActions.General.CombatToggle;
+
+        combatToggleAction.performed += HandleCombatToggle;
+
         // Initialize the game state to NormalMovement
         ChangeState(GameState.NormalMovement);
 
@@ -39,6 +48,8 @@ public class StateManager : MonoBehaviour
         if (playerController != null)
         {
             movementState = new MovementState(playerController, inputActions, cameraController);
+            combatState = new CombatState(playerController, inputActions, cameraController);
+
             movementState.Enter(); // Call the Enter method after initializing the MovementState
         }
         else
@@ -81,8 +92,11 @@ public class StateManager : MonoBehaviour
 
             case GameState.Combat:
                 Debug.Log("Entering Combat State");
-                // Enable combat inputs/actions
-                // Setup player for combat
+                combatState?.Enter();
+                HandleInputActions(newState);
+
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
                 break;
         }
     }
@@ -100,6 +114,7 @@ public class StateManager : MonoBehaviour
     // Method to toggle the menu state
     private void HandleMenuToggle(InputAction.CallbackContext context)
     {
+        Debug.Log("Combat Toggle Pressed");
         if (currentState == GameState.NormalMovement)
         {
             ChangeState(GameState.Menu);
@@ -110,12 +125,38 @@ public class StateManager : MonoBehaviour
         }
     }
 
-    void Update()
+    private void HandleCombatToggle(InputAction.CallbackContext context)
     {
-        // Call Execute on the current state
         if (currentState == GameState.NormalMovement)
         {
-            movementState?.Execute();
+            if (playerController.CanLockOntoTarget())
+            {
+                Debug.Log("Target found, switching to combat state.");
+                ChangeState(GameState.Combat);
+                playerController.ToggleLockOn();
+            }
+        }
+        else if (currentState == GameState.Combat)
+        {
+            ChangeState(GameState.NormalMovement);
+            // Optionally, disable lock-on when exiting combat state.
+            playerController.ToggleLockOn(); 
+        }
+    }
+
+    void Update()
+    {
+        switch (currentState)
+        {
+            case GameState.NormalMovement:
+                movementState?.Execute();
+                break;
+            case GameState.Combat:
+                combatState?.Execute();
+                break;
+            case GameState.Menu:
+                // Menu state logic
+                break;
         }
     }
 
@@ -131,7 +172,9 @@ public class StateManager : MonoBehaviour
     {
         inputActions.Disable(); // Disable the input actions
         menuToggleAction.performed -= HandleMenuToggle; // Unregister the HandleMenuToggle method
+        inputActions.General.CombatToggle.performed -= HandleCombatToggle;
         movementState?.Exit();
+        combatState?.Exit();
     }
 
     private void HandleInputActions(GameState state)
@@ -151,7 +194,7 @@ public class StateManager : MonoBehaviour
                 inputActions.Combat.Disable();
                 break;
             case GameState.Combat:
-                inputActions.BasicMovement.Disable();
+                inputActions.BasicMovement.Enable();
                 inputActions.Gliding.Disable();
                 inputActions.InMenu.Disable();
                 inputActions.Combat.Enable();

@@ -228,9 +228,18 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
             ""id"": ""f2893be6-d5f3-4106-aaba-db465c5e794c"",
             ""actions"": [
                 {
-                    ""name"": ""New action"",
+                    ""name"": ""SwitchLeft"",
                     ""type"": ""Button"",
                     ""id"": ""95b75bac-70b2-4a74-8d7a-f9a5f7323b44"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SwitchRight"",
+                    ""type"": ""Button"",
+                    ""id"": ""1a924dad-5f48-4290-be04-88d218e0e7ae"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -240,12 +249,23 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""1cd8c4ca-0015-4917-bc11-5f427bda9e07"",
-                    ""path"": """",
+                    ""id"": ""cfa879c0-4778-45a0-8819-a4877710d9a0"",
+                    ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""New action"",
+                    ""action"": ""SwitchRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1cd8c4ca-0015-4917-bc11-5f427bda9e07"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwitchLeft"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -291,6 +311,15 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""CombatToggle"",
+                    ""type"": ""Button"",
+                    ""id"": ""1b6c21d1-b7f7-4e1c-9ca0-47eaa47b0a35"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -302,6 +331,17 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Menu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""19e5ed4d-e757-4ccd-8176-5c01289ed7b4"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CombatToggle"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -329,13 +369,15 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         m_InMenu_Click = m_InMenu.FindAction("Click", throwIfNotFound: true);
         // Combat
         m_Combat = asset.FindActionMap("Combat", throwIfNotFound: true);
-        m_Combat_Newaction = m_Combat.FindAction("New action", throwIfNotFound: true);
+        m_Combat_SwitchLeft = m_Combat.FindAction("SwitchLeft", throwIfNotFound: true);
+        m_Combat_SwitchRight = m_Combat.FindAction("SwitchRight", throwIfNotFound: true);
         // Gliding
         m_Gliding = asset.FindActionMap("Gliding", throwIfNotFound: true);
         m_Gliding_Glide = m_Gliding.FindAction("Glide", throwIfNotFound: true);
         // General
         m_General = asset.FindActionMap("General", throwIfNotFound: true);
         m_General_Menu = m_General.FindAction("Menu", throwIfNotFound: true);
+        m_General_CombatToggle = m_General.FindAction("CombatToggle", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -501,12 +543,14 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     // Combat
     private readonly InputActionMap m_Combat;
     private ICombatActions m_CombatActionsCallbackInterface;
-    private readonly InputAction m_Combat_Newaction;
+    private readonly InputAction m_Combat_SwitchLeft;
+    private readonly InputAction m_Combat_SwitchRight;
     public struct CombatActions
     {
         private @PlayerInputs m_Wrapper;
         public CombatActions(@PlayerInputs wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Newaction => m_Wrapper.m_Combat_Newaction;
+        public InputAction @SwitchLeft => m_Wrapper.m_Combat_SwitchLeft;
+        public InputAction @SwitchRight => m_Wrapper.m_Combat_SwitchRight;
         public InputActionMap Get() { return m_Wrapper.m_Combat; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -516,16 +560,22 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         {
             if (m_Wrapper.m_CombatActionsCallbackInterface != null)
             {
-                @Newaction.started -= m_Wrapper.m_CombatActionsCallbackInterface.OnNewaction;
-                @Newaction.performed -= m_Wrapper.m_CombatActionsCallbackInterface.OnNewaction;
-                @Newaction.canceled -= m_Wrapper.m_CombatActionsCallbackInterface.OnNewaction;
+                @SwitchLeft.started -= m_Wrapper.m_CombatActionsCallbackInterface.OnSwitchLeft;
+                @SwitchLeft.performed -= m_Wrapper.m_CombatActionsCallbackInterface.OnSwitchLeft;
+                @SwitchLeft.canceled -= m_Wrapper.m_CombatActionsCallbackInterface.OnSwitchLeft;
+                @SwitchRight.started -= m_Wrapper.m_CombatActionsCallbackInterface.OnSwitchRight;
+                @SwitchRight.performed -= m_Wrapper.m_CombatActionsCallbackInterface.OnSwitchRight;
+                @SwitchRight.canceled -= m_Wrapper.m_CombatActionsCallbackInterface.OnSwitchRight;
             }
             m_Wrapper.m_CombatActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @Newaction.started += instance.OnNewaction;
-                @Newaction.performed += instance.OnNewaction;
-                @Newaction.canceled += instance.OnNewaction;
+                @SwitchLeft.started += instance.OnSwitchLeft;
+                @SwitchLeft.performed += instance.OnSwitchLeft;
+                @SwitchLeft.canceled += instance.OnSwitchLeft;
+                @SwitchRight.started += instance.OnSwitchRight;
+                @SwitchRight.performed += instance.OnSwitchRight;
+                @SwitchRight.canceled += instance.OnSwitchRight;
             }
         }
     }
@@ -568,11 +618,13 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     private readonly InputActionMap m_General;
     private IGeneralActions m_GeneralActionsCallbackInterface;
     private readonly InputAction m_General_Menu;
+    private readonly InputAction m_General_CombatToggle;
     public struct GeneralActions
     {
         private @PlayerInputs m_Wrapper;
         public GeneralActions(@PlayerInputs wrapper) { m_Wrapper = wrapper; }
         public InputAction @Menu => m_Wrapper.m_General_Menu;
+        public InputAction @CombatToggle => m_Wrapper.m_General_CombatToggle;
         public InputActionMap Get() { return m_Wrapper.m_General; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -585,6 +637,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @Menu.started -= m_Wrapper.m_GeneralActionsCallbackInterface.OnMenu;
                 @Menu.performed -= m_Wrapper.m_GeneralActionsCallbackInterface.OnMenu;
                 @Menu.canceled -= m_Wrapper.m_GeneralActionsCallbackInterface.OnMenu;
+                @CombatToggle.started -= m_Wrapper.m_GeneralActionsCallbackInterface.OnCombatToggle;
+                @CombatToggle.performed -= m_Wrapper.m_GeneralActionsCallbackInterface.OnCombatToggle;
+                @CombatToggle.canceled -= m_Wrapper.m_GeneralActionsCallbackInterface.OnCombatToggle;
             }
             m_Wrapper.m_GeneralActionsCallbackInterface = instance;
             if (instance != null)
@@ -592,6 +647,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @Menu.started += instance.OnMenu;
                 @Menu.performed += instance.OnMenu;
                 @Menu.canceled += instance.OnMenu;
+                @CombatToggle.started += instance.OnCombatToggle;
+                @CombatToggle.performed += instance.OnCombatToggle;
+                @CombatToggle.canceled += instance.OnCombatToggle;
             }
         }
     }
@@ -620,7 +678,8 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     }
     public interface ICombatActions
     {
-        void OnNewaction(InputAction.CallbackContext context);
+        void OnSwitchLeft(InputAction.CallbackContext context);
+        void OnSwitchRight(InputAction.CallbackContext context);
     }
     public interface IGlidingActions
     {
@@ -629,5 +688,6 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     public interface IGeneralActions
     {
         void OnMenu(InputAction.CallbackContext context);
+        void OnCombatToggle(InputAction.CallbackContext context);
     }
 }

@@ -94,9 +94,11 @@
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
     <Compile Include="Assets\ThirdParty\Polyart\PolyartStudio\SharedResources\CritiasFoliage\Code\FoliagePainterRuntime.cs" />
     <Compile Include="Assets\Suntail Village\Scripts\SuntailStartDemo.cs" />
+    <Compile Include="Assets\Scripts\Managers\States\CombatState.cs" />
     <Compile Include="Assets\ThirdParty\Polyart\PolyartStudio\SharedResources\CritiasFoliage\Code\FoliageWindTreeWind.cs" />
     <Compile Include="Assets\ThirdParty\Polyart\PolyartStudio\SharedResources\Scripts\Misc\FPS_Counter.cs" />
     <Compile Include="Assets\ThirdParty\Polyart\PolyartStudio\SharedResources\CritiasFoliage\Code\FoliageTerrainListener.cs" />
+    <Compile Include="Assets\Scripts\Managers\PlayerManager.cs" />
     <Compile Include="Assets\ThirdParty\Polyart\PolyartStudio\SharedResources\CritiasFoliage\Examples\ExampleRuntimeSettings.cs" />
     <Compile Include="Assets\Scripts\AbilityActivator.cs" />
     <Compile Include="Assets\ThirdParty\Polyart\PolyartStudio\SharedResources\CritiasFoliage\Code\FoliageType.cs" />
@@ -110,7 +112,7 @@
     <Compile Include="Assets\ThirdParty\Polyart\PolyartStudio\SharedResources\CritiasFoliage\Code\FoliageCaching.cs" />
     <Compile Include="Assets\ThirdParty\Polyart\PolyartStudio\SharedResources\Scripts\Misc\Flythrough.cs" />
     <Compile Include="Assets\ThirdParty\Polyart\PolyartStudio\SharedResources\CritiasFoliage\Code\FoliageCell.cs" />
-    <Compile Include="Assets\Scripts\Managers\States\CombatScript.cs" />
+    <Compile Include="Assets\Scripts\Managers\LockOnManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
