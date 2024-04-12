@@ -1,89 +1,60 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace fyp
+public class CombatState : IState
 {
-    // CombatState
-    public class CombatState : IState
+    private PlayerController playerController;
+    private PlayerInputs inputActions;
+    private CameraController cameraController;
+
+    public CombatState(PlayerController controller, PlayerInputs inputActions, CameraController cameraController)
     {
-        private PlayerController playerController;
-        private CameraController cameraController;
-        private PlayerInputs inputActions;
-        private Transform currentTarget; // The current enemy the player is locked onto
+        playerController = controller;
+        this.inputActions = inputActions;
+        this.cameraController = cameraController;
+    }
 
-        public CombatState(PlayerController controller, PlayerInputs inputActions, CameraController cameraController)
+    public void Enter()
+    {
+        Debug.Log("Entered Combat State");
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        inputActions.Combat.Enable();  // Ensure combat inputs are enabled
+    }
+
+    public void Execute()
+    {
+        // Handle movement even during combat
+        Vector2 movementInput = inputActions.BasicMovement.Move.ReadValue<Vector2>();
+        Vector3 movementVector = new Vector3(movementInput.x, 0, movementInput.y);
+        playerController.CombatMovement(movementVector, true);
+
+        // Directly handle combat actions
+        if (inputActions.Combat.SmallAttack.WasPressedThisFrame())
         {
-            playerController = controller;
-            this.inputActions = inputActions;
-            this.cameraController = cameraController;
+            playerController.PerformSmallAttack();
+        }
+        if (inputActions.Combat.BigAttack.WasPressedThisFrame())
+        {
+            playerController.PerformBigAttack();
         }
 
-        public void Enter()
+        // Example of handling target switching
+        if (inputActions.Combat.SwitchLeft.WasPressedThisFrame())
         {
-            Debug.Log("Entered Combat State");
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
-
-            // Enable combat controls
-            inputActions.Combat.Enable();
-
-            // Check if the player wants to lock onto a target
-            if (playerController.WantsToLockOn())
-            {
-                playerController.ToggleLockOn();
-                playerController.SetWantsToLockOn(false); // Reset the flag or method
-            }
-
-            // If there's a target, update camera and player rotation
-            if (playerController.currentTarget != null)
-            {
-                cameraController.SetTarget(currentTarget);
-            }
-
-            // Bind combat action events for switching targets
-            inputActions.Combat.SwitchLeft.performed += context => playerController.SwitchTarget(true);
-            inputActions.Combat.SwitchRight.performed += context => playerController.SwitchTarget(false);
+            playerController.SwitchTarget(true);
         }
-
-        public void Execute()
+        if (inputActions.Combat.SwitchRight.WasPressedThisFrame())
         {
-            Debug.Log("CombatState.Execute() called");
-            Vector2 movementInput = inputActions.BasicMovement.Move.ReadValue<Vector2>();
-            Vector3 movementVector = new Vector3(movementInput.x, 0, movementInput.y);
-            playerController.CombatMovement(movementVector, true); // true indicates isInCombatMode
+            playerController.SwitchTarget(false);
         }
+    }
 
-        public void Exit()
-        {
-            Debug.Log("Exited Combat State");
-
-            // Disable combat controls
-            inputActions.Combat.Disable();
-
-            // Unbind combat action events
-            inputActions.Combat.SwitchLeft.performed -= SwitchTargetLeft;
-            inputActions.Combat.SwitchRight.performed -= SwitchTargetRight;
-
-            // Disable lock-on when exiting combat state
-            playerController.ToggleLockOn();
-        }
-
-        private void SwitchTargetLeft(InputAction.CallbackContext context)
-        {
-            if (context.performed)
-            {
-                playerController.SwitchTarget(true); // Switch to the left target
-            }
-        }
-
-        private void SwitchTargetRight(InputAction.CallbackContext context)
-        {
-            if (context.performed)
-            {
-                playerController.SwitchTarget(false); // Switch to the right target
-            }
-        }
+    public void Exit()
+    {
+        Debug.Log("Exited Combat State");
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+        inputActions.Combat.Disable();  // Disable combat inputs on exit
     }
 }

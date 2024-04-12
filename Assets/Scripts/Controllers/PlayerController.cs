@@ -6,14 +6,7 @@ using static UnityEngine.GraphicsBuffer;
 public class PlayerController : MonoBehaviour
 {
 
-    [Header("Combat")]
-    [SerializeField] private Transform cameraTransform; // Assign the main camera's transform here
-    [SerializeField] private LayerMask targetLayer; // Set this to the layer your enemies are on
-    [SerializeField] private float targetingRange = 15f; // How far in front of the player we check for targets
-    [SerializeField] private float angleLimit = 45f; // Angle range for finding targets in front of the player
-    [SerializeField] private CameraController cameraController;
-
-    [Header("other stuff")]
+    [Header("other")]
     public static PlayerController Instance;
     private Rigidbody rb;
     private bool glideActivated = false;
@@ -27,12 +20,35 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float sprintSpeed = 10f;
     [SerializeField] private float interactionDistance = 3f;
     private bool isSprinting = false;
+    private bool jumpTriggered = false;
 
     private bool isLockedOn = false;
     public Transform currentTarget;
+    private Vector3 inputDirection; // This will store the current input direction for the player
+
+    [SerializeField] Animator animator;
+
+    [Header("Combat")]
+    [SerializeField] private Transform cameraTransform; // Assign the main camera's transform here
+    [SerializeField] private LayerMask targetLayer; // Set this to the layer your enemies are on
+    [SerializeField] private float targetingRange = 15f; // How far in front of the player we check for targets
+    [SerializeField] private float angleLimit = 45f; // Angle range for finding targets in front of the player
+    [SerializeField] private CameraController cameraController;
+
+
+    [Header("Attack Settings")]
+    [SerializeField] private float smallAttackDamage = 10f; // Damage dealt by small attack
+    [SerializeField] private float bigAttackDamage = 20f; // Damage dealt by big attack
+    [SerializeField] private float attackRange = 2f; // Range of the attacks
+    [SerializeField] private LayerMask enemyLayer; // Layer that enemies are on
+    private bool smallAttackTriggered = false;
+    private bool bigAttackTriggered = false;
+
+
 
     private void Awake()
     {
+        //animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
         if (glideObject != null) glideObject.SetActive(false);
 
@@ -48,8 +64,36 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        UpdateAnimationStates();
         HandleGliding();
         HandleCombat();
+    }
+
+    private void UpdateAnimationStates()
+    {
+        // Existing handling for jump
+        if (jumpTriggered)
+        {
+            animator.SetBool("Jump", true);
+            jumpTriggered = false;  // Reset immediately after setting
+        }
+        else
+        {
+            animator.SetBool("Jump", false);
+        }
+
+        // Continue with existing movement and grounded checks
+        bool isMoving = inputDirection.sqrMagnitude > 0.01f;
+        bool isGrounded = IsGrounded();
+        animator.SetBool("IsMoving", isMoving);
+        animator.SetBool("IsGrounded", isGrounded);
+        animator.SetBool("IsSprinting", isSprinting);
+
+        // Handle attack animations using booleans
+        animator.SetBool("DoingSmallAttack", smallAttackTriggered);
+        animator.SetBool("DoingBigAttack", bigAttackTriggered);
+        smallAttackTriggered = false;  // Reset immediately after setting
+        bigAttackTriggered = false;    // Reset immediately after setting
     }
 
     public void OnJumpButtonReleased()
@@ -59,10 +103,17 @@ public class PlayerController : MonoBehaviour
 
     public void MovePlayer(Vector3 direction)
     {
+        inputDirection = direction.normalized;
         if (direction == Vector3.zero)
+        {
             rb.velocity = Vector3.Lerp(rb.velocity, Vector3.zero, Time.deltaTime * moveSpeed);
+            animator.SetBool("IsMoving", false);
+        }
         else
+        {
             ApplyMovement(direction);
+            animator.SetBool("IsMoving", true);
+        }
     }
 
     private void ApplyMovement(Vector3 direction)
@@ -81,6 +132,7 @@ public class PlayerController : MonoBehaviour
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.VelocityChange);
             glideActivated = jumpReleasedAfterJumping = false;
+            jumpTriggered = true; // Trigger jump animation on the next frame
         }
     }
 
@@ -284,5 +336,32 @@ public class PlayerController : MonoBehaviour
     public bool WantsToLockOn()
     {
         return wantsToLockOn;
+    }
+
+    // Method for performing a small attack
+    public void PerformSmallAttack()
+    {
+        if (!smallAttackTriggered) // Ensure we only set the attack if it's not already set
+        {
+            Debug.Log("Performing Small Attack");
+            smallAttackTriggered = true;
+            ApplyAttackDamage(smallAttackDamage);
+        }
+    }
+
+    public void PerformBigAttack()
+    {
+        if (!bigAttackTriggered) // Ensure we only set the attack if it's not already set
+        {
+            Debug.Log("Performing Big Attack");
+            bigAttackTriggered = true;
+            ApplyAttackDamage(bigAttackDamage);
+        }
+    }
+
+    // Helper method to apply damage to enemies in range
+    private void ApplyAttackDamage(float damage)
+    {
+
     }
 }

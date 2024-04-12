@@ -140,8 +140,30 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""5e211298-4830-4601-8cce-8d2a0c25fad0"",
+                    ""path"": ""<Gamepad>/leftStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""0cb35061-aad7-4da0-95e6-8466493f9d15"",
                     ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Sprint"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""add49acc-0e5f-41ba-9bbd-ce3fd746c9b3"",
+                    ""path"": ""<Gamepad>/buttonEast"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -162,8 +184,30 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""5960b5b9-4b84-4efb-8171-aca11b8c2067"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""cb7a67a3-3877-4f17-85a5-8fc757acc7ec"",
                     ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cd5eb9ef-bc8d-4a43-a840-a4cd2393d2b4"",
+                    ""path"": ""<Gamepad>/buttonWest"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -184,8 +228,30 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""e9998b70-84e9-4e8a-bdbc-9cb7998d30ab"",
+                    ""path"": ""<Gamepad>/rightStick/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraX"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""d3bf8cc2-c7ce-411f-94f5-650d63aba84d"",
                     ""path"": ""<Mouse>/delta/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraY"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3e381da3-1f59-4bc7-93a2-f5abec40b703"",
+                    ""path"": ""<Gamepad>/rightStick/y"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -244,6 +310,24 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SmallAttack"",
+                    ""type"": ""Button"",
+                    ""id"": ""b18d8632-bc93-40eb-9f83-f48dd8d702e0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""BigAttack"",
+                    ""type"": ""Button"",
+                    ""id"": ""86063549-5c0b-4c31-8ef4-384e97d91728"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -260,12 +344,78 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""cc2ddd65-158b-4e09-b41d-422da95ea6f9"",
+                    ""path"": ""<Gamepad>/rightStick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwitchRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""1cd8c4ca-0015-4917-bc11-5f427bda9e07"",
                     ""path"": ""<Keyboard>/q"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""SwitchLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""946b9d5c-f348-4562-9bdd-22b990ca8bc9"",
+                    ""path"": ""<Gamepad>/rightStick/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwitchLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d76cf834-ee78-4433-b5ca-dc42a7d5e844"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SmallAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ff263bf0-2163-4cb1-9ca4-d38c974cd7c1"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SmallAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""40bdaddc-2981-4e69-b81d-9d0ce7f3922e"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""BigAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b4b81d70-6885-47cc-9359-7177f0bf766c"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""BigAttack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -336,8 +486,30 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""07414318-39d1-44a5-bb00-9441486c32a2"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Menu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""19e5ed4d-e757-4ccd-8176-5c01289ed7b4"",
                     ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CombatToggle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b471c4bf-f93c-40f0-b099-a9563b2cc79c"",
+                    ""path"": ""<Gamepad>/rightStickPress"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -371,6 +543,8 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         m_Combat = asset.FindActionMap("Combat", throwIfNotFound: true);
         m_Combat_SwitchLeft = m_Combat.FindAction("SwitchLeft", throwIfNotFound: true);
         m_Combat_SwitchRight = m_Combat.FindAction("SwitchRight", throwIfNotFound: true);
+        m_Combat_SmallAttack = m_Combat.FindAction("SmallAttack", throwIfNotFound: true);
+        m_Combat_BigAttack = m_Combat.FindAction("BigAttack", throwIfNotFound: true);
         // Gliding
         m_Gliding = asset.FindActionMap("Gliding", throwIfNotFound: true);
         m_Gliding_Glide = m_Gliding.FindAction("Glide", throwIfNotFound: true);
@@ -545,12 +719,16 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     private ICombatActions m_CombatActionsCallbackInterface;
     private readonly InputAction m_Combat_SwitchLeft;
     private readonly InputAction m_Combat_SwitchRight;
+    private readonly InputAction m_Combat_SmallAttack;
+    private readonly InputAction m_Combat_BigAttack;
     public struct CombatActions
     {
         private @PlayerInputs m_Wrapper;
         public CombatActions(@PlayerInputs wrapper) { m_Wrapper = wrapper; }
         public InputAction @SwitchLeft => m_Wrapper.m_Combat_SwitchLeft;
         public InputAction @SwitchRight => m_Wrapper.m_Combat_SwitchRight;
+        public InputAction @SmallAttack => m_Wrapper.m_Combat_SmallAttack;
+        public InputAction @BigAttack => m_Wrapper.m_Combat_BigAttack;
         public InputActionMap Get() { return m_Wrapper.m_Combat; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -566,6 +744,12 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @SwitchRight.started -= m_Wrapper.m_CombatActionsCallbackInterface.OnSwitchRight;
                 @SwitchRight.performed -= m_Wrapper.m_CombatActionsCallbackInterface.OnSwitchRight;
                 @SwitchRight.canceled -= m_Wrapper.m_CombatActionsCallbackInterface.OnSwitchRight;
+                @SmallAttack.started -= m_Wrapper.m_CombatActionsCallbackInterface.OnSmallAttack;
+                @SmallAttack.performed -= m_Wrapper.m_CombatActionsCallbackInterface.OnSmallAttack;
+                @SmallAttack.canceled -= m_Wrapper.m_CombatActionsCallbackInterface.OnSmallAttack;
+                @BigAttack.started -= m_Wrapper.m_CombatActionsCallbackInterface.OnBigAttack;
+                @BigAttack.performed -= m_Wrapper.m_CombatActionsCallbackInterface.OnBigAttack;
+                @BigAttack.canceled -= m_Wrapper.m_CombatActionsCallbackInterface.OnBigAttack;
             }
             m_Wrapper.m_CombatActionsCallbackInterface = instance;
             if (instance != null)
@@ -576,6 +760,12 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @SwitchRight.started += instance.OnSwitchRight;
                 @SwitchRight.performed += instance.OnSwitchRight;
                 @SwitchRight.canceled += instance.OnSwitchRight;
+                @SmallAttack.started += instance.OnSmallAttack;
+                @SmallAttack.performed += instance.OnSmallAttack;
+                @SmallAttack.canceled += instance.OnSmallAttack;
+                @BigAttack.started += instance.OnBigAttack;
+                @BigAttack.performed += instance.OnBigAttack;
+                @BigAttack.canceled += instance.OnBigAttack;
             }
         }
     }
@@ -680,6 +870,8 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     {
         void OnSwitchLeft(InputAction.CallbackContext context);
         void OnSwitchRight(InputAction.CallbackContext context);
+        void OnSmallAttack(InputAction.CallbackContext context);
+        void OnBigAttack(InputAction.CallbackContext context);
     }
     public interface IGlidingActions
     {
