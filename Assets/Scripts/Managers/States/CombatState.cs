@@ -39,7 +39,7 @@ namespace fyp
             // If there's a target, update camera and player rotation
             if (playerController.currentTarget != null)
             {
-                cameraController.LockOnTargetSmooth();
+                cameraController.SetTarget(currentTarget);
             }
 
             // Bind combat action events for switching targets

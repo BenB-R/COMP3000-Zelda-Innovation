@@ -82,6 +82,7 @@
     <Compile Include="Assets\ThirdParty\Polyart\PolyartStudio\SharedResources\CritiasFoliage\Code\FoliagePainterEditTime.cs" />
     <Compile Include="Assets\ThirdParty\Polyart\PolyartStudio\SharedResources\CritiasFoliage\Code\FoliageDataRuntime.cs" />
     <Compile Include="Assets\Suntail Village\Scripts\Door.cs" />
+    <Compile Include="Assets\Scripts\Managers\LockOnManager.cs" />
     <Compile Include="Assets\ThirdParty\Polyart\PolyartStudio\SharedResources\Scripts\Gameplay\MillRotate.cs" />
     <Compile Include="Assets\Scripts\Managers\StateManager.cs" />
     <Compile Include="Assets\Scripts\Controllers\NPCController.cs" />
@@ -112,12 +113,12 @@
     <Compile Include="Assets\ThirdParty\Polyart\PolyartStudio\SharedResources\CritiasFoliage\Code\FoliageCaching.cs" />
     <Compile Include="Assets\ThirdParty\Polyart\PolyartStudio\SharedResources\Scripts\Misc\Flythrough.cs" />
     <Compile Include="Assets\ThirdParty\Polyart\PolyartStudio\SharedResources\CritiasFoliage\Code\FoliageCell.cs" />
-    <Compile Include="Assets\Scripts\Managers\LockOnManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
     <None Include="Assets\ThirdParty\Polyart\PolyartStudio\SharedResources\Shaders\Foliage\PA_Grass.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
+    <None Include="Assets\ThirdParty\RPGMonsterBundlePolyart\HowToTestHDRP_URP.txt" />
     <None Include="Assets\ThirdParty\Polyart\PolyartStudio\SharedResources\Shaders\Foliage\PA_TreeWind_CustomLighting.shader" />
     <None Include="Assets\ThirdParty\Polyart\PolyartStudio\SharedResources\Shaders\Terrain\PA_Planet.shader" />
     <None Include="Assets\ThirdParty\Polyart\PolyartStudio\SharedResources\Shaders\Foliage\PA_TreeWind.shader" />
@@ -164,6 +165,7 @@
     <None Include="Assets\ThirdParty\Polyart\PolyartStudio\SharedResources\Shaders\Effects\PA_CloudCard.shader" />
     <None Include="Assets\ThirdParty\Polyart\PolyartStudio\SharedResources\Shaders\Deprecated\Dreamscape_CliffAuto.shader" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
+    <None Include="Assets\ThirdParty\RPGMonsterBundlePolyart\CommonStuffs\Shader\PAMaskTint.shader" />
     <None Include="Assets\ThirdParty\Polyart\PolyartStudio\SharedResources\Shaders\Deprecated\Dreamscape_Surface_WorldAligned.shader" />
     <None Include="Assets\ThirdParty\Polyart\PolyartStudio\SharedResources\Shaders\Deprecated\VS_indirect.cginc" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader" />

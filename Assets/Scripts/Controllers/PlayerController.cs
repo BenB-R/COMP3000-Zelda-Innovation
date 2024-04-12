@@ -187,7 +187,7 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("Attempting to lock-on.");
             currentTarget = FindNearestTargetable();
-            LockOnManager.Instance.ClearLockOnTarget();
+            LockOnManager.Instance.SetLockOnTarget(currentTarget);
             if (currentTarget != null)
             {
                 Debug.Log($"Locked onto {currentTarget.name}");
@@ -262,7 +262,7 @@ public class PlayerController : MonoBehaviour
         // Camera facing target
         if (cameraController != null)
         {
-            cameraController.LockOnTargetSmooth();
+            cameraController.SetTarget(currentTarget);
         }
     }
 

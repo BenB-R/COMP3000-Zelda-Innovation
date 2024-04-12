@@ -12,30 +12,44 @@ public class CameraController : MonoBehaviour
     public float lockOnSpeed = 5.0f; // Control the speed of lock-on transition
     public float smoothTime = 0.2f; // Smoothing factor
 
+    public float minDistance = 1.0f;
+    public float maxDistance = 4.0f;
+    public LayerMask collisionLayer;
+
     private float currentX = 0.0f;
     private float currentY = 0.0f;
     private float distance = 4.0f;
     private float lastCombatXAngle = 0.0f;
     private bool transitioningOutOfCombat = false;
 
-
-    public float minDistance = 1.0f;
-    public float maxDistance = 4.0f;
-    public LayerMask collisionLayer;
-
     private Vector3 velocity = Vector3.zero; // For smooth damping
 
-    void Start()
+    private void Start()
     {
         distance = maxDistance;
     }
 
-    // Normal state camera movement
-    public void HandleMouseInput(Vector2 mouseMovement)
+    private void Update()
     {
-        currentX += mouseMovement.x * sensitivity;
-        currentY -= mouseMovement.y * sensitivity;
-        currentY = Mathf.Clamp(currentY, minYAngle, maxYAngle);
+        HandleMouseInput(new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")));
+    }
+
+    private void LateUpdate()
+    {
+        if (target != null)
+        {
+            HandleCombatCamera();
+        }
+        else if (transitioningOutOfCombat)
+        {
+            HandleTransitionOutOfCombat();
+        }
+        else
+        {
+            HandleExplorationCamera();
+        }
+
+        AdjustDistance();
     }
 
     public void SetTarget(Transform newTarget)
@@ -43,46 +57,20 @@ public class CameraController : MonoBehaviour
         target = newTarget;
     }
 
-    // Combat state camera movement
-    public void HandleCombatCamera(Vector2 lookInput)
+    public void ExitCombatMode()
     {
-
-        // This example will clamp the Y input and only allow the camera to rotate vertically within limits
-        currentY -= lookInput.y * sensitivity;
-        currentY = Mathf.Clamp(currentY, minYAngle, maxYAngle);
+        transitioningOutOfCombat = true;
+        target = null; // Clear the target
     }
 
-    void LateUpdate()
+    public void HandleMouseInput(Vector2 mouseMovement)
     {
-        if (target != null) // Target locked, adjust camera for combat
-        {
-            LockOnTargetSmooth();
-            transitioningOutOfCombat = false; // Reset the flag when in combat
-        }
-        else if (transitioningOutOfCombat)
-        {
-            // Smoothly transition to the original camera position while maintaining the X angle
-            Vector3 dir = Quaternion.Euler(0, lastCombatXAngle, 0) * new Vector3(0, 0, -distance) + offset;
-            Vector3 desiredPosition = player.position + dir;
-            transform.position = Vector3.SmoothDamp(transform.position, desiredPosition, ref velocity, smoothTime);
-            transform.LookAt(player.position + offset);
-
-            // Consider resetting transitioningOutOfCombat to false once transition is complete or based on a condition
-        }
-        else
-        {
-            // Default free camera movement
-            Vector3 dir = new Vector3(0, 0, -distance);
-            Quaternion rotation = Quaternion.Euler(currentY, currentX, 0);
-            Vector3 desiredPosition = player.position + rotation * dir + offset;
-            transform.position = Vector3.Lerp(transform.position, desiredPosition, smoothTime);
-            transform.LookAt(player.position + offset);
-        }
-
-        AdjustDistance();
+        // Smooth out mouse input
+        currentX = Mathf.Lerp(currentX, currentX + mouseMovement.x * sensitivity, Time.deltaTime * 10f);
+        currentY = Mathf.Clamp(Mathf.Lerp(currentY, currentY - mouseMovement.y * sensitivity, Time.deltaTime * 10f), minYAngle, maxYAngle);
     }
 
-    public void LockOnTargetSmooth()
+    private void HandleCombatCamera()
     {
         Vector3 directionToTarget = target.position - player.position;
         Vector3 desiredPosition = player.position - directionToTarget.normalized * distance + combatOffset; // Use combatOffset here
@@ -95,6 +83,32 @@ public class CameraController : MonoBehaviour
         Quaternion desiredRotation = Quaternion.LookRotation(target.position - transform.position);
         transform.rotation = Quaternion.Slerp(transform.rotation, desiredRotation, lockOnSpeed * Time.deltaTime);
         lastCombatXAngle = transform.eulerAngles.y;
+
+        transitioningOutOfCombat = false; // Reset the flag when in combat
+    }
+
+    private void HandleTransitionOutOfCombat()
+    {
+        // Smoothly transition to the original camera position while maintaining the X angle
+        Vector3 dir = Quaternion.Euler(0, lastCombatXAngle, 0) * new Vector3(0, 0, -distance) + offset;
+        Vector3 desiredPosition = player.position + dir;
+        transform.position = Vector3.SmoothDamp(transform.position, desiredPosition, ref velocity, smoothTime);
+        transform.LookAt(player.position + offset);
+
+        // Consider resetting transitioningOutOfCombat to false once transition is complete or based on a condition
+    }
+
+    private void HandleExplorationCamera()
+    {
+        // Smooth out camera rotation
+        Quaternion targetRotation = Quaternion.Euler(currentY, currentX, 0);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
+
+        // Smooth out camera position
+        Vector3 dir = new Vector3(0, 0, -distance);
+        Vector3 desiredPosition = player.position + transform.rotation * dir + offset;
+        transform.position = Vector3.Lerp(transform.position, desiredPosition, smoothTime);
+        transform.LookAt(player.position + offset);
     }
 
     private void AdjustDistance()
@@ -108,11 +122,5 @@ public class CameraController : MonoBehaviour
         {
             distance = maxDistance;
         }
-    }
-
-    public void ExitCombatMode()
-    {
-        transitioningOutOfCombat = true;
-        target = null; // Clear the target
     }
 }
