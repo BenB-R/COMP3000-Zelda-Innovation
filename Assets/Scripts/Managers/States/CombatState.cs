@@ -27,7 +27,7 @@ public class CombatState : IState
         // Handle movement even during combat
         Vector2 movementInput = inputActions.BasicMovement.Move.ReadValue<Vector2>();
         Vector3 movementVector = new Vector3(movementInput.x, 0, movementInput.y);
-        playerController.CombatMovement(movementVector, true);
+        playerController.CombatMovement(movementVector);
 
         // Directly handle combat actions
         if (inputActions.Combat.SmallAttack.WasPressedThisFrame())

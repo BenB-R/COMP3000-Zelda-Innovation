@@ -8,55 +8,112 @@ namespace fyp
     public class AnimalController : MonoBehaviour
     {
         private NavMeshAgent agent;
-        public float wanderRadius = 10f; // The radius in which the animal will wander.
-        public float wanderTimer = 5f; // The time in seconds between random moves.
+        private Animator animator;
+        private AudioSource audioSource;
 
-        private float timer; // Internal timer to track wandering time.
+        [SerializeField] private float health = 100f;
+        [SerializeField] private int baseXP = 50;
 
-        // Start is called before the first frame update
+        [SerializeField] private AudioClip movingSFX;
+        [SerializeField] private AudioClip damageSFX;
+        [SerializeField] private AudioClip deathSFX;
+
+        public float wanderRadius = 10f;
+        public float wanderTimer = 5f;
+
+        private float timer;
+        private Vector3 lastPosition;
+        private Coroutine wanderCoroutine;
+
         void Start()
         {
             agent = GetComponent<NavMeshAgent>();
-            timer = wanderTimer; // Initialize the timer.
-            StartCoroutine(Wander()); // Start the wandering coroutine.
+            animator = GetComponent<Animator>();
+            audioSource = GetComponent<AudioSource>();
+            timer = wanderTimer;
+            wanderCoroutine = StartCoroutine(Wander());
+            lastPosition = transform.position;
         }
 
-        // Update is called once per frame
         void Update()
         {
-           
+            bool isMoving = Vector3.Distance(transform.position, lastPosition) > 0.01f;
+            animator.SetBool("IsMoving", isMoving);
+            if (isMoving && !audioSource.isPlaying && movingSFX)
+            {
+                audioSource.PlayOneShot(movingSFX);
+            }
+            lastPosition = transform.position;
         }
 
         private IEnumerator Wander()
         {
-            while (true) // Loop indefinitely
+            while (true)
             {
-                // Update the timer every frame and check if it's time to wander.
                 timer += Time.deltaTime;
 
                 if (timer >= wanderTimer)
                 {
                     Vector3 newPos = RandomNavSphere(transform.position, wanderRadius, -1);
                     agent.SetDestination(newPos);
-                    timer = 0; // Reset the timer.
+                    timer = 0;
                 }
 
-                yield return null; // Yield until the next frame.
+                yield return null;
             }
         }
 
-        // Utility method to find a random point on the NavMesh within a certain radius.
         public static Vector3 RandomNavSphere(Vector3 origin, float dist, int layermask)
         {
             Vector3 randDirection = Random.insideUnitSphere * dist;
-
             randDirection += origin;
-
             NavMeshHit navHit;
-
             NavMesh.SamplePosition(randDirection, out navHit, dist, layermask);
-
             return navHit.position;
+        }
+
+        public void TakeDamage(float amount)
+        {
+            health -= amount;
+            animator.SetBool("IsHit", true);
+            StartCoroutine(ResetIsHit());
+            if (damageSFX)
+            {
+                audioSource.PlayOneShot(damageSFX);
+            }
+            if (health <= 0)
+            {
+                Die();
+            }
+        }
+
+        private IEnumerator ResetIsHit()
+        {
+            yield return null; // Wait one frame
+            animator.SetBool("IsHit", false);
+        }
+
+        private void Die()
+        {
+            animator.SetBool("IsMoving", false);
+            animator.SetBool("IsDead", true);
+            agent.enabled = false;
+            if (wanderCoroutine != null)
+            {
+                StopCoroutine(wanderCoroutine);
+            }
+            DropXP();
+            if (deathSFX)
+            {
+                audioSource.PlayOneShot(deathSFX);
+            }
+            Destroy(gameObject, 20f);
+        }
+
+        private void DropXP()
+        {
+            float xpToDrop = Random.Range(baseXP * 0.8f, baseXP * 1.2f);
+            Debug.Log($"Dropped {xpToDrop} XP");
         }
     }
 }

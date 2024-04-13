@@ -12,7 +12,6 @@ public class LockOnManager : MonoBehaviour
 
     void Awake()
     {
-        Debug.Log("tets");
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -33,14 +32,11 @@ public class LockOnManager : MonoBehaviour
         // If there's a current target, update the marker's position
         if (currentTarget != null)
         {
-            Debug.Log("I'm trying!");
             Vector2 screenPoint = Camera.main.WorldToScreenPoint(GetTargetCenter(currentTarget));
-
 
             // Convert the screenPoint to UI space
             lockOnMarkerRectTransform.position = screenPoint;
             lockOnMarkerInstance.SetActive(true);
-
         }
         else
         {

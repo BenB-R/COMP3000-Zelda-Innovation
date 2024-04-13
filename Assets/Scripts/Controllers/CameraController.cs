@@ -16,21 +16,22 @@ public class CameraController : MonoBehaviour
     private float currentY = 0.0f;
     private float distance = 4.0f;
     private float lastCombatXAngle = 0.0f;
+    private Quaternion lastCombatRotation;
     private bool transitioningOutOfCombat = false;
-
 
     public float minDistance = 1.0f;
     public float maxDistance = 4.0f;
     public LayerMask collisionLayer;
 
     private Vector3 velocity = Vector3.zero; // For smooth damping
+    private Quaternion rotationVelocity;
 
     void Start()
     {
         distance = maxDistance;
+        lastCombatRotation = Quaternion.identity;
     }
 
-    // Normal state camera movement
     public void HandleMouseInput(Vector2 mouseMovement)
     {
         currentX += mouseMovement.x * sensitivity;
@@ -43,76 +44,81 @@ public class CameraController : MonoBehaviour
         target = newTarget;
     }
 
-    // Combat state camera movement
-    public void HandleCombatCamera(Vector2 lookInput)
+    void Update()
     {
-
-        // This example will clamp the Y input and only allow the camera to rotate vertically within limits
-        currentY -= lookInput.y * sensitivity;
-        currentY = Mathf.Clamp(currentY, minYAngle, maxYAngle);
-    }
-
-    void LateUpdate()
-    {
-        if (target != null) // Target locked, adjust camera for combat
+        if (target != null)
         {
             LockOnTargetSmooth();
-            transitioningOutOfCombat = false; // Reset the flag when in combat
-        }
-        else if (transitioningOutOfCombat)
-        {
-            // Smoothly transition to the original camera position while maintaining the X angle
-            Vector3 dir = Quaternion.Euler(0, lastCombatXAngle, 0) * new Vector3(0, 0, -distance) + offset;
-            Vector3 desiredPosition = player.position + dir;
-            transform.position = Vector3.SmoothDamp(transform.position, desiredPosition, ref velocity, smoothTime);
-            transform.LookAt(player.position + offset);
-
-            // Consider resetting transitioningOutOfCombat to false once transition is complete or based on a condition
+            transitioningOutOfCombat = false;
         }
         else
         {
-            // Default free camera movement
-            Vector3 dir = new Vector3(0, 0, -distance);
-            Quaternion rotation = Quaternion.Euler(currentY, currentX, 0);
-            Vector3 desiredPosition = player.position + rotation * dir + offset;
-            transform.position = Vector3.Lerp(transform.position, desiredPosition, smoothTime);
-            transform.LookAt(player.position + offset);
+            if (!transitioningOutOfCombat)
+            {
+                transitioningOutOfCombat = true; // Start transitioning out of combat
+                currentX = lastCombatXAngle; // Use the last horizontal angle from combat as the starting angle for normal mode
+            }
+
+            if (transitioningOutOfCombat)
+            {
+                SmoothTransitionToNormalMode();
+            }
         }
 
         AdjustDistance();
+        RegularCameraMovement();
+    }
+
+    private void RegularCameraMovement()
+    {
+        if (target == null && !transitioningOutOfCombat)
+        {
+            Vector3 direction = Quaternion.Euler(currentY, currentX, 0) * new Vector3(0, 0, -1);
+            Vector3 position = player.position + direction * distance + offset;
+            transform.position = position;
+            transform.LookAt(player.position + offset);
+        }
+    }
+
+    private void SmoothTransitionToNormalMode()
+    {
+        Vector3 dir = Quaternion.Euler(currentY, currentX, 0) * new Vector3(0, 0, -distance) + offset;
+        Vector3 desiredPosition = player.position + dir;
+        transform.position = Vector3.SmoothDamp(transform.position, desiredPosition, ref velocity, smoothTime);
+
+        Quaternion desiredRotation = Quaternion.Euler(currentY, currentX, 0);
+        transform.rotation = Quaternion.Slerp(transform.rotation, desiredRotation, lockOnSpeed * Time.deltaTime);
+
+        if (Vector3.Distance(transform.position, desiredPosition) < 0.01f && Quaternion.Angle(transform.rotation, desiredRotation) < 1.0f)
+        {
+            transitioningOutOfCombat = false;
+        }
     }
 
     public void LockOnTargetSmooth()
     {
         Vector3 directionToTarget = target.position - player.position;
-        Vector3 desiredPosition = player.position - directionToTarget.normalized * distance + combatOffset; // Use combatOffset here
+        Vector3 desiredPosition = player.position - directionToTarget.normalized * distance + combatOffset;
         desiredPosition.y = Mathf.Max(desiredPosition.y, player.position.y + combatOffset.y);
 
-        // Smoothly move the camera to the desired position
         transform.position = Vector3.SmoothDamp(transform.position, desiredPosition, ref velocity, smoothTime);
-
-        // Smoothly rotate the camera to look at the target
         Quaternion desiredRotation = Quaternion.LookRotation(target.position - transform.position);
         transform.rotation = Quaternion.Slerp(transform.rotation, desiredRotation, lockOnSpeed * Time.deltaTime);
+
         lastCombatXAngle = transform.eulerAngles.y;
+        lastCombatRotation = transform.rotation; // Update lastCombatRotation to current rotation in combat
     }
 
     private void AdjustDistance()
     {
         RaycastHit hit;
-        if (Physics.Raycast(player.position, transform.position - player.position, out hit, maxDistance, collisionLayer))
+        if (Physics.Raycast(player.position + offset, -transform.forward, out hit, maxDistance, collisionLayer))
         {
             distance = Mathf.Clamp(hit.distance, minDistance, maxDistance);
         }
         else
         {
-            distance = maxDistance;
+            distance = maxDistance; // No obstruction, use the maximum distance
         }
-    }
-
-    public void ExitCombatMode()
-    {
-        transitioningOutOfCombat = true;
-        target = null; // Clear the target
     }
 }

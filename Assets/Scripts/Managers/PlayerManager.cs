@@ -7,13 +7,23 @@ namespace fyp
     public class PlayerManager : MonoBehaviour
     {
         public int health = 100;
+        public float experience = 0;
         public bool canGlide = false;
+        public int level = 0;
 
         public void UnlockGlide()
         {
-            Debug.Log("here too?");
             canGlide = true;
-            // Notify the PlayerController or any other component that needs to know about this change.
+        }
+
+        public void gainExperience(float experienceAmount)
+        {
+            experience += experienceAmount;
+        }
+
+        public void die()
+        {
+            experience = experience * 0.25f;
         }
     }
 }
