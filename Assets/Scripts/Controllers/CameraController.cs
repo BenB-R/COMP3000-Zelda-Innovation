@@ -10,7 +10,8 @@ public class CameraController : MonoBehaviour
     public float minYAngle = -35f;
     public float maxYAngle = 60f;
     public float lockOnSpeed = 5.0f; // Control the speed of lock-on transition
-    public float smoothTime = 0.2f; // Smoothing factor
+    [Tooltip("Smoothing factor for the camera movement")]
+    public float smoothTime = 0.2f; // Smoothing factor, now adjustable in the inspector
 
     private float currentX = 0.0f;
     private float currentY = 0.0f;
@@ -49,50 +50,28 @@ public class CameraController : MonoBehaviour
         if (target != null)
         {
             LockOnTargetSmooth();
-            transitioningOutOfCombat = false;
+            transitioningOutOfCombat = false; // Ensure we are not transitioning when a target is present
         }
         else
         {
             if (!transitioningOutOfCombat)
             {
                 transitioningOutOfCombat = true; // Start transitioning out of combat
-                currentX = lastCombatXAngle; // Use the last horizontal angle from combat as the starting angle for normal mode
+                currentX = lastCombatXAngle; // Retain the last horizontal angle from combat
             }
 
-            if (transitioningOutOfCombat)
-            {
-                SmoothTransitionToNormalMode();
-            }
+            AdjustDistance();
+            RegularCameraMovement();
         }
-
-        AdjustDistance();
-        RegularCameraMovement();
     }
+
 
     private void RegularCameraMovement()
     {
-        if (target == null && !transitioningOutOfCombat)
-        {
-            Vector3 direction = Quaternion.Euler(currentY, currentX, 0) * new Vector3(0, 0, -1);
-            Vector3 position = player.position + direction * distance + offset;
-            transform.position = position;
-            transform.LookAt(player.position + offset);
-        }
-    }
-
-    private void SmoothTransitionToNormalMode()
-    {
-        Vector3 dir = Quaternion.Euler(currentY, currentX, 0) * new Vector3(0, 0, -distance) + offset;
-        Vector3 desiredPosition = player.position + dir;
-        transform.position = Vector3.SmoothDamp(transform.position, desiredPosition, ref velocity, smoothTime);
-
-        Quaternion desiredRotation = Quaternion.Euler(currentY, currentX, 0);
-        transform.rotation = Quaternion.Slerp(transform.rotation, desiredRotation, lockOnSpeed * Time.deltaTime);
-
-        if (Vector3.Distance(transform.position, desiredPosition) < 0.01f && Quaternion.Angle(transform.rotation, desiredRotation) < 1.0f)
-        {
-            transitioningOutOfCombat = false;
-        }
+        Vector3 direction = Quaternion.Euler(currentY, currentX, 0) * new Vector3(0, 0, -1);
+        Vector3 position = player.position + direction * distance + offset;
+        transform.position = position;
+        transform.LookAt(player.position + offset);
     }
 
     public void LockOnTargetSmooth()

@@ -139,8 +139,8 @@ public class StateManager : MonoBehaviour
         else if (currentState == GameState.Combat)
         {
             ChangeState(GameState.NormalMovement);
-            // Optionally, disable lock-on when exiting combat state.
-            playerController.ToggleLockOn(); 
+            playerController.ToggleLockOn();
+            // FindObjectOfType<CameraController>().TransitionFromCombatToNormal(); // Smooth transition to normal camera
         }
     }
 

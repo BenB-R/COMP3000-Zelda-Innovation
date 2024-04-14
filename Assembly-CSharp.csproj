@@ -61,6 +61,7 @@
     <Compile Include="Assets\ThirdParty\Polyart\PolyartStudio\SharedResources\CritiasFoliage\Examples\ExampleRuntimeTreeAdder.cs" />
     <Compile Include="Assets\ThirdParty\Polyart\PolyartStudio\SharedResources\Scripts\Misc\SmoothMouseLook.cs" />
     <Compile Include="Assets\Scripts\Managers\IState.cs" />
+    <Compile Include="Assets\Scripts\Dungeons\RoomType.cs" />
     <Compile Include="Assets\ThirdParty\Polyart\PolyartStudio\SharedResources\Scripts\Misc\Cull_Lights.cs" />
     <Compile Include="Assets\ThirdParty\Polyart\PolyartStudio\SharedResources\CritiasFoliage\Examples\ExampleRuntimeTreeRemover.cs" />
     <Compile Include="Assets\Suntail Village\Scripts\PlayerInteractions.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="Assets\Inputs\PlayerInputs.cs" />
     <Compile Include="Assets\ThirdParty\Polyart\PolyartStudio\SharedResources\CritiasFoliage\Code\FoliageInstance.cs" />
     <Compile Include="Assets\Suntail Village\Scripts\AudioZoneControl.cs" />
+    <Compile Include="Assets\Scripts\Dungeons\DungeonGenerator.cs" />
     <Compile Include="Assets\ThirdParty\Polyart\PolyartStudio\SharedResources\CritiasFoliage\Code\FoliagePainterEditTime.cs" />
     <Compile Include="Assets\ThirdParty\Polyart\PolyartStudio\SharedResources\CritiasFoliage\Code\FoliageDataRuntime.cs" />
     <Compile Include="Assets\Suntail Village\Scripts\Door.cs" />
@@ -106,7 +108,7 @@
     <Compile Include="Assets\ThirdParty\Polyart\PolyartStudio\SharedResources\CritiasFoliage\Code\FoliageRenderer.cs" />
     <Compile Include="Assets\Scripts\Controllers\CameraController.cs" />
     <Compile Include="Assets\ThirdParty\Polyart\PolyartStudio\SharedResources\Scripts\Gameplay\Character\FirstPersonController_Dreamscape.cs" />
-    <Compile Include="Assets\Scripts\Controllers\AnimalSpawner.cs" />
+    <Compile Include="Assets\Scripts\Managers\AnimalSpawner.cs" />
     <Compile Include="Assets\Scripts\Controllers\PlayerController.cs" />
     <Compile Include="Assets\Suntail Village\Scripts\PlayerController.cs" />
     <Compile Include="Assets\Scripts\UI\ToggleObject.cs" />
