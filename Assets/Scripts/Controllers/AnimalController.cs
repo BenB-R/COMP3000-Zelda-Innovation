@@ -7,8 +7,8 @@ namespace fyp
     [RequireComponent(typeof(NavMeshAgent))]
     public class AnimalController : MonoBehaviour
     {
-        private NavMeshAgent agent;
-        private Animator animator;
+        protected NavMeshAgent agent;
+        protected Animator animator;
         private AudioSource audioSource;
 
         [SerializeField] private float health = 100f;
@@ -25,7 +25,7 @@ namespace fyp
         private Vector3 lastPosition;
         private Coroutine wanderCoroutine;
 
-        void Start()
+        internal void Start()
         {
             agent = GetComponent<NavMeshAgent>();
             animator = GetComponent<Animator>();
@@ -35,7 +35,7 @@ namespace fyp
             lastPosition = transform.position;
         }
 
-        void Update()
+        internal void Update()
         {
             bool isMoving = Vector3.Distance(transform.position, lastPosition) > 0.01f;
             animator.SetBool("IsMoving", isMoving);
