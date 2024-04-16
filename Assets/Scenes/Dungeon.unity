@@ -155,9 +155,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2bd57c20db9dbd94bbdaa3f7e7a47d4f, type: 2}
   - {fileID: 11400000, guid: a43404ddd6cc5fd4c9819bd6ef215074, type: 2}
   - {fileID: 11400000, guid: fd7f516dada7d144fa5d88b2fbb6b161, type: 2}
-  dungeonWidth: 150
-  dungeonHeight: 150
-  roomCount: 10
+  dungeonWidth: 100
+  dungeonHeight: 100
+  roomCount: 15
 --- !u!1001 &135713084
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -433,17 +433,17 @@ PrefabInstance:
     - target: {fileID: 4960581637707358615, guid: 4f704757dbd099841bc62111cdbef3bb,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.99999994
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4960581637707358615, guid: 4f704757dbd099841bc62111cdbef3bb,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.99999994
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4960581637707358615, guid: 4f704757dbd099841bc62111cdbef3bb,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.99999994
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4960581637707358615, guid: 4f704757dbd099841bc62111cdbef3bb,
         type: 3}
