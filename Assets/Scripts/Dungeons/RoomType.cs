@@ -4,14 +4,19 @@ using UnityEngine;
 
 namespace fyp
 {
+    public enum RoomTypeEnum
+    {
+        Start,
+        Boss,
+        Other
+    }
+
     [CreateAssetMenu(fileName = "RoomType", menuName = "Dungeon/RoomType")]
     public class RoomType : ScriptableObject
     {
-        public string roomName;
-        public GameObject prefab; // Prefab to instantiate for this room type
-        public Color roomColor; // Color can be used for debugging or visual distinction
-        public bool isSpecialRoom; // Indicates if the room has a special significance, like a boss or treasure room
-        public int minSize; // Minimum size of the room
-        public int maxSize; // Maximum size of the room
+        public GameObject prefab; // Assign prefab for each room type
+        public RoomTypeEnum roomCategory; // To specify what type of room this is
+        public Vector2 size; // Size of the room based on tiles
     }
+
 }
