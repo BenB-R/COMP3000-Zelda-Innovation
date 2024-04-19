@@ -117,6 +117,8 @@
     <Compile Include="Assets\ThirdParty\Polyart\PolyartStudio\SharedResources\CritiasFoliage\Code\FoliageCaching.cs" />
     <Compile Include="Assets\ThirdParty\Polyart\PolyartStudio\SharedResources\Scripts\Misc\Flythrough.cs" />
     <Compile Include="Assets\ThirdParty\Polyart\PolyartStudio\SharedResources\CritiasFoliage\Code\FoliageCell.cs" />
+    <Compile Include="Assets\Scripts\Unlockable.cs" />
+    <Compile Include="Assets\Scripts\Treasure.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
@@ -877,14 +879,14 @@
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.Timeline.Editor.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.VisualScripting.State">
-      <HintPath>Library\ScriptAssemblies\Unity.VisualScripting.State.dll</HintPath>
-    </Reference>
     <Reference Include="Unity.AI.Navigation">
       <HintPath>Library\ScriptAssemblies\Unity.AI.Navigation.dll</HintPath>
     </Reference>
     <Reference Include="Unity.AI.Navigation.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.AI.Navigation.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.VisualScripting.State">
+      <HintPath>Library\ScriptAssemblies\Unity.VisualScripting.State.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
