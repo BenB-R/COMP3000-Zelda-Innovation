@@ -15,6 +15,8 @@ namespace fyp
         public bool canGlide = false;
         public int level = 0;
         public float experienceNeeded = 100;
+        public int bossKeys = 0;
+        public int regularKeys = 0;
 
         [Header("UI Elements")]
         public Image healthBar;

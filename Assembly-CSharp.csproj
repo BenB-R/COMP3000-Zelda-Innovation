@@ -100,6 +100,7 @@
     <Compile Include="Assets\ThirdParty\Polyart\PolyartStudio\SharedResources\CritiasFoliage\Code\FoliagePainterRuntime.cs" />
     <Compile Include="Assets\Suntail Village\Scripts\SuntailStartDemo.cs" />
     <Compile Include="Assets\Scripts\Managers\States\CombatState.cs" />
+    <Compile Include="Assets\Scripts\Treasure.cs" />
     <Compile Include="Assets\ThirdParty\Polyart\PolyartStudio\SharedResources\CritiasFoliage\Code\FoliageWindTreeWind.cs" />
     <Compile Include="Assets\ThirdParty\Polyart\PolyartStudio\SharedResources\Scripts\Misc\FPS_Counter.cs" />
     <Compile Include="Assets\ThirdParty\Polyart\PolyartStudio\SharedResources\CritiasFoliage\Code\FoliageTerrainListener.cs" />
@@ -109,6 +110,7 @@
     <Compile Include="Assets\ThirdParty\Polyart\PolyartStudio\SharedResources\CritiasFoliage\Code\FoliageType.cs" />
     <Compile Include="Assets\ThirdParty\Polyart\PolyartStudio\SharedResources\CritiasFoliage\Code\FoliageRenderer.cs" />
     <Compile Include="Assets\Scripts\Controllers\CameraController.cs" />
+    <Compile Include="Assets\Scripts\Unlockable.cs" />
     <Compile Include="Assets\ThirdParty\Polyart\PolyartStudio\SharedResources\Scripts\Gameplay\Character\FirstPersonController_Dreamscape.cs" />
     <Compile Include="Assets\Scripts\Managers\AnimalSpawner.cs" />
     <Compile Include="Assets\Scripts\Controllers\PlayerController.cs" />
@@ -117,8 +119,6 @@
     <Compile Include="Assets\ThirdParty\Polyart\PolyartStudio\SharedResources\CritiasFoliage\Code\FoliageCaching.cs" />
     <Compile Include="Assets\ThirdParty\Polyart\PolyartStudio\SharedResources\Scripts\Misc\Flythrough.cs" />
     <Compile Include="Assets\ThirdParty\Polyart\PolyartStudio\SharedResources\CritiasFoliage\Code\FoliageCell.cs" />
-    <Compile Include="Assets\Scripts\Unlockable.cs" />
-    <Compile Include="Assets\Scripts\Treasure.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

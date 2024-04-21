@@ -9,6 +9,7 @@ namespace fyp
         public enum ContentType { Health, XP, Key, BossKey }
         public ContentType contains; // What does the chest contain?
         public int amount; // Amount of the content
+        [SerializeField] private PlayerManager playerManager;
 
         public void Opened()
         {
@@ -22,9 +23,11 @@ namespace fyp
                     break;
                 case ContentType.Key:
                     Debug.Log("You received " + amount + " Key(s)!");
+                    playerManager.regularKeys++;
                     break;
                 case ContentType.BossKey:
                     Debug.Log("You received " + amount + " Key(s)!");
+                    playerManager.bossKeys++;
                     break;
             }
 

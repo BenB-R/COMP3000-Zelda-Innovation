@@ -410,6 +410,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: NPC
       objectReference: {fileID: 0}
+    - target: {fileID: 1414305805187485331, guid: a2600c9c8f539b34f8fb1c8af2d731e0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1414305805187485340, guid: a2600c9c8f539b34f8fb1c8af2d731e0,
         type: 3}
       propertyPath: m_RootOrder
@@ -1101,6 +1106,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: RatAssassinPADefault
       objectReference: {fileID: 0}
+    - target: {fileID: 7237178871622730094, guid: 1364a55dbe7b427a9252aca276daa189,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7237178871623097678, guid: 1364a55dbe7b427a9252aca276daa189,
         type: 3}
       propertyPath: m_RootOrder
@@ -1463,6 +1473,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: NPC
       objectReference: {fileID: 0}
+    - target: {fileID: 1414305805187485331, guid: a2600c9c8f539b34f8fb1c8af2d731e0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1414305805187485340, guid: a2600c9c8f539b34f8fb1c8af2d731e0,
         type: 3}
       propertyPath: m_RootOrder
@@ -1730,6 +1745,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 28867586}
     m_Modifications:
+    - target: {fileID: 1414305804224328758, guid: a2600c9c8f539b34f8fb1c8af2d731e0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1414305805187485329, guid: a2600c9c8f539b34f8fb1c8af2d731e0,
         type: 3}
       propertyPath: m_Height
@@ -2766,6 +2786,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Glider
       objectReference: {fileID: 0}
+    - target: {fileID: 7857255742970981856, guid: 4c93c7610666e544bbf8272a531fbba8,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7857255742970981863, guid: 4c93c7610666e544bbf8272a531fbba8,
         type: 3}
       propertyPath: m_RootOrder
@@ -3071,7 +3096,7 @@ PrefabInstance:
     - target: {fileID: 5859908123928805513, guid: 82e51ae1295bda34e94855eb890b2ddc,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 82e51ae1295bda34e94855eb890b2ddc, type: 3}
@@ -3981,6 +4006,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: NPC
       objectReference: {fileID: 0}
+    - target: {fileID: 1414305805187485331, guid: a2600c9c8f539b34f8fb1c8af2d731e0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1414305805187485340, guid: a2600c9c8f539b34f8fb1c8af2d731e0,
         type: 3}
       propertyPath: m_RootOrder
@@ -4670,6 +4700,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: NPC
+      objectReference: {fileID: 0}
+    - target: {fileID: 1414305805187485331, guid: a2600c9c8f539b34f8fb1c8af2d731e0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1414305805187485340, guid: a2600c9c8f539b34f8fb1c8af2d731e0,
         type: 3}
@@ -5636,7 +5671,7 @@ PrefabInstance:
     - target: {fileID: 6815895880716415515, guid: 1877829b4f6ad8c418d968194ab28334,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7430091090227000488, guid: 1877829b4f6ad8c418d968194ab28334,
         type: 3}

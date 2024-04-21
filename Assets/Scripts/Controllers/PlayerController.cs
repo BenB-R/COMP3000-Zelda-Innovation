@@ -218,30 +218,54 @@ public class PlayerController : MonoBehaviour
 
     public void Interact()
     {
+
+        Debug.Log("Reached Interact");
         RaycastHit hit;
         Vector3 rayStart = transform.position + Vector3.up * 0.6f + transform.forward * 0.6f;
-        if (Physics.Raycast(rayStart, transform.forward, out hit, interactionDistance))
+        if (!Physics.Raycast(rayStart, transform.forward, out hit, interactionDistance))
         {
-            AbilityActivator abilityActivator = hit.collider.GetComponent<AbilityActivator>();
-            if (abilityActivator != null)
-            {
-                // Activate the ability if an AbilityActivator is hit
-                abilityActivator.ActivateAbility(playerManager);
-                PlaySoundEffect(interactSFX);
-            }
-            else
-            {
-                // Try to get an NPCController component from the hit object
-                NPCController npc = hit.collider.GetComponent<NPCController>();
-                if (npc != null)
-                {
-                    // Call the new Interact method
-                    npc.Interact();
-                    PlaySoundEffect(interactSFX);
-                }
-            }
+            return; // Exit early if the raycast hits nothing
+        }
+
+        // Handle AbilityActivator interactions
+        AbilityActivator abilityActivator = hit.collider.GetComponent<AbilityActivator>();
+        if (abilityActivator != null)
+        {
+            abilityActivator.ActivateAbility(playerManager);
+            PlaySoundEffect(interactSFX);
+            return;
+        }
+
+        // Handle NPC interactions
+        NPCController npc = hit.collider.GetComponent<NPCController>();
+        if (npc != null)
+        {
+            npc.Interact();
+            PlaySoundEffect(interactSFX);
+            return;
+        }
+
+        // Handle LockableDoor interactions
+        Unlockable door = hit.collider.GetComponent<Unlockable>();
+        if (door != null)
+        {
+            door.OpenAttempt(playerManager.regularKeys, playerManager.bossKeys);
+            PlaySoundEffect(interactSFX);
+            return;
+        }
+
+        // Handle TreasureChest interactions
+        Treasure chest = hit.collider.GetComponent<Treasure>();
+        if (chest != null)
+        {
+            Debug.Log("open chest");
+
+            chest.Opened();
+            PlaySoundEffect(interactSFX);
+            return;
         }
     }
+
 
     private bool IsAtHeight()
     {
