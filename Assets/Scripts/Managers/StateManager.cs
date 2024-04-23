@@ -75,7 +75,6 @@ public class StateManager : MonoBehaviour
         {
             case GameState.Menu:
                 Debug.Log("Entering Menu State");
-                // Show the cursor and unlock it
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.None;
                 HandleInputActions(newState); // Enable input actions for the new state
